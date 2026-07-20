@@ -48,7 +48,7 @@ const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 	{
 		skillsByCategory.length > 0 && (
 			<div class="mt-8">
-				<h4 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Skills</h4>
+				<h3 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Skills</h3>
 				<div class="mt-3 flex flex-col gap-3 text-sm">
 					{skillsByCategory.map(({ category, items }) => (
 						<div>
@@ -64,7 +64,7 @@ const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 	{
 		languages.length > 0 && (
 			<div class="mt-8">
-				<h4 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Languages</h4>
+				<h3 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Languages</h3>
 				<ul class="mt-3 flex flex-col gap-1 text-sm text-slate-300">
 					{languages.map(({ language, fluency }) => (
 						<li>
@@ -79,7 +79,7 @@ const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 	{
 		achievements.length > 0 && (
 			<div class="mt-8">
-				<h4 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Achievements</h4>
+				<h3 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Achievements</h3>
 				<ul class="mt-3 flex flex-col gap-2 text-sm text-slate-300">
 					{achievements.map((achievement) => (
 						<li>{achievement}</li>
@@ -92,7 +92,7 @@ const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 	{
 		awards.length > 0 && (
 			<div class="mt-8">
-				<h4 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Scholarships</h4>
+				<h3 class="border-b-2 border-amber-500 pb-1 text-xs font-bold uppercase tracking-wide text-slate-100">Scholarships</h3>
 				<ul class="mt-3 flex flex-col gap-2 text-sm text-slate-300">
 					{awards.map(({ title, date }) => (
 						<li>
@@ -108,7 +108,7 @@ const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 <style>
 	/* Layout.astro sets a global h1-h4 color tied to the light/dark theme;
 	   the sidebar is always dark, so its headings must stay light regardless of theme. */
-	h4 {
+	h3 {
 		color: #f1f5f9;
 	}
 </style>

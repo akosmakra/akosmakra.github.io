@@ -13,6 +13,7 @@ const themes = [
 		@click="open = !open"
 		@keydown.escape.window="open = false"
 		aria-haspopup="listbox"
+		aria-label="Change color theme"
 		:aria-expanded="open"
 	>
 		<span class="theme-icon transition-transform duration-300 ease-in-out group-hover:scale-105" :class="{ 'scale-105': open }">

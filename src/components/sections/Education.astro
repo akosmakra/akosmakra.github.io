@@ -14,7 +14,7 @@ import { certificates } from "@cv";
 				const years = `${startYear} - ${endYear}`;
 
 				return (
-					<div class="flex items-baseline print:break-inside-avoid">
+					<li class="flex items-baseline print:break-inside-avoid">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 hidden h-5 w-5 self-start md:inline-block print:hidden">
 							<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
 							<path d="M22 10v6" />
@@ -29,7 +29,7 @@ import { certificates } from "@cv";
 							<div class="text-sm text-skin-muted">{area}</div>
 							<time class="right-0 top-0 text-xs text-skin-muted md:absolute md:block">{years}</time>
 						</div>
-					</div>
+					</li>
 				);
 			})
 		}
@@ -38,12 +38,12 @@ import { certificates } from "@cv";
 	{
 		certificates.length > 0 && (
 			<>
-				<h4>Certificates</h4>
+				<h3>Certificates</h3>
 				<ul class="space-y-4 py-3 print:space-y-0">
 					{certificates.map(({ name, date, issuer, url }) => {
 						const certificateYear = new Date(date).getFullYear();
 						return (
-							<div class="flex items-baseline">
+							<li class="flex items-baseline">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 hidden h-5 w-5 self-start md:inline-block print:hidden">
 									<path d="M15 12h-5" />
 									<path d="M15 8h-5" />
@@ -59,7 +59,7 @@ import { certificates } from "@cv";
 									<div class="text-sm text-skin-muted">{issuer}</div>
 									<time class="right-0 top-0 text-xs text-skin-muted md:absolute md:block">{certificateYear}</time>
 								</div>
-							</div>
+							</li>
 						);
 					})}
 				</ul>

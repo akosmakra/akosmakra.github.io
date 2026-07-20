@@ -20,7 +20,7 @@ test("experience and education sections are present", async ({ page }) => {
 
 test("dark mode toggle switches the theme", async ({ page }) => {
 	await page.goto("/");
-	await page.getByRole("button", { name: /System|Light|Dark/ }).click();
+	await page.getByRole("button", { name: "Change color theme" }).click();
 	await page.getByRole("option", { name: "Dark", exact: true }).click();
 	await expect(page.locator("html")).toHaveClass(/dark/);
 });

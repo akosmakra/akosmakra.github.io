@@ -132,6 +132,18 @@ const profilesInfo = profiles.map(({ network, url }) => {
 					window.dispatchEvent(new CustomEvent("run-tests-easter-egg"));
 				},
 			},
+			{
+				id: "run-load-tests",
+				title: "Run Load Tests",
+				icon: `<svg style="margin-right: 8px" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m-9.5 0h10.5M9 12.75l1.5-1.5 1.5 1.5 3-3" />
+</svg>`,
+				hotkey: "ctrl+B",
+				section: "Actions",
+				handler: () => {
+					window.dispatchEvent(new CustomEvent("run-load-test-easter-egg"));
+				},
+			},
 			...data,
 		]);
 

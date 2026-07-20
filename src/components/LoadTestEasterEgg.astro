@@ -1,0 +1,82 @@
+<div
+	id="load-test-overlay"
+	class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 p-4"
+	role="dialog"
+	aria-label="Load test animation"
+>
+	<div class="w-[min(90vw,30rem)] overflow-hidden rounded-lg bg-[#1e1e1e] font-mono text-sm text-slate-300 shadow-2xl">
+		<div class="flex items-center gap-1.5 bg-[#2d2d2d] px-3 py-2">
+			<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
+			<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
+			<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
+			<span class="ml-2 text-xs text-slate-500">k6 run cv-load-test.js</span>
+		</div>
+		<div id="load-test-lines" class="min-h-[260px] space-y-1 p-4 text-xs leading-relaxed"></div>
+	</div>
+</div>
+
+<script>
+	function line(text: string, cls = "text-slate-400") {
+		const p = document.createElement("p");
+		p.className = cls;
+		p.textContent = text;
+		return p;
+	}
+
+	function runLoadTestAnimation() {
+		const overlay = document.getElementById("load-test-overlay");
+		const container = document.getElementById("load-test-lines");
+		if (!overlay || !container) return;
+
+		container.innerHTML = "";
+		overlay.classList.remove("hidden");
+		overlay.classList.add("flex");
+
+		const steps: Array<() => void> = [
+			() => container.appendChild(line("  execution: local")),
+			() => container.appendChild(line("     script: cv-load-test.js")),
+			() => container.appendChild(line("")),
+			() => container.appendChild(line("  scenarios: (100.00%) 1 scenario, 50 max VUs, 15s max duration", "text-slate-500")),
+			() => container.appendChild(line("")),
+		];
+
+		const vuSteps = [10, 25, 50];
+		vuSteps.forEach((vu) => {
+			steps.push(() => container.appendChild(line(`  running (${(vu / 10).toFixed(0)}.0s), ${vu}/50 VUs, ${vu * 8} complete iterations`, "text-amber-400")));
+		});
+
+		steps.push(
+			() => container.appendChild(line("")),
+			() => container.appendChild(line("     ✓ status is 200", "text-green-400")),
+			() => container.appendChild(line("     ✓ response time < 200ms", "text-green-400")),
+			() => container.appendChild(line("     ✓ CV renders correctly", "text-green-400")),
+			() => container.appendChild(line("")),
+			() => container.appendChild(line("     checks.................: 100.00% ✓ 1200  0 failed")),
+			() => container.appendChild(line("     http_req_duration......: avg=41ms  p(95)=87ms")),
+			() => container.appendChild(line("     vus....................: 50      min=0  max=50")),
+		);
+
+		steps.forEach((step, i) => setTimeout(step, i * 180));
+
+		setTimeout(
+			() => {
+				container.appendChild(line("─────────────────────────────────────", "text-slate-600"));
+				container.appendChild(line("PASSED ✓ all thresholds met · scaled to 50 concurrent recruiters 😉", "font-semibold text-green-400"));
+			},
+			steps.length * 180 + 300,
+		);
+
+		const close = (e: Event) => {
+			if (e.target === overlay || (e as KeyboardEvent).key === "Escape") {
+				overlay.classList.add("hidden");
+				overlay.classList.remove("flex");
+				overlay.removeEventListener("click", close);
+				document.removeEventListener("keydown", close);
+			}
+		};
+		overlay.addEventListener("click", close);
+		document.addEventListener("keydown", close);
+	}
+
+	window.addEventListener("run-load-test-easter-egg", runLoadTestAnimation);
+</script>

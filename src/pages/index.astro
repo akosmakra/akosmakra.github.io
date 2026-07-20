@@ -6,10 +6,9 @@ import Header from "@/components/cv/Header.astro";
 import Education from "@/components/sections/Education.astro";
 import Experience from "@/components/sections/Experience.astro";
 import SystemStatus from "@/components/cv/SystemStatus.astro";
-import MiniTerminal from "@/components/cv/MiniTerminal.astro";
-import VisitCounter from "@/components/cv/VisitCounter.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
 import TestRunnerEasterEgg from "@/components/TestRunnerEasterEgg.astro";
+import LoadTestEasterEgg from "@/components/LoadTestEasterEgg.astro";
 import ThemeSwitch from "@/components/ThemeSwitch.astro";
 
 import { basics } from "@cv";
@@ -29,13 +28,12 @@ const { name, label } = basics;
 				<Education />
 			</div>
 			<SystemStatus />
-			<MiniTerminal />
-			<VisitCounter />
 		</main>
 	</div>
 
 	<KeyboardManager />
 	<TestRunnerEasterEgg />
+	<LoadTestEasterEgg />
 </Layout>
 
 <style>

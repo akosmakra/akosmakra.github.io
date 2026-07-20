@@ -27,6 +27,8 @@
     {
       "name": "Magyar Telekom Nyrt.",
       "position": "Test Automation Engineer",
+      "location": "",
+      "location_type": "",
       "url": "https://www.telekom.hu",
       "startDate": "2024-07-01",
       "endDate": null,
@@ -44,6 +46,8 @@
     {
       "name": "Effective Group Talent Solutions Kft. — B. Braun project",
       "position": "Software Tester",
+      "location": "",
+      "location_type": "",
       "url": "",
       "startDate": "2021-11-01",
       "endDate": "2023-06-01",
@@ -57,6 +61,8 @@
     {
       "name": "MedRes Kft.",
       "position": "Researcher",
+      "location": "",
+      "location_type": "",
       "url": "",
       "startDate": "2019-05-01",
       "endDate": "2019-09-01",
@@ -71,6 +77,7 @@
       "name": "Fraunhofer IBMT",
       "position": "ERASMUS Research Intern",
       "location": "Sankt Ingbert, Germany",
+      "location_type": "On site",
       "url": "https://www.ibmt.fraunhofer.de",
       "startDate": "2016-06-01",
       "endDate": "2016-07-31",
@@ -85,6 +92,7 @@
       "name": "University of Florence (MSDLAB)",
       "position": "ERASMUS Research Intern",
       "location": "Florence, Italy",
+      "location_type": "On site",
       "url": "https://www.unifi.it",
       "startDate": "2015-06-01",
       "endDate": "2015-07-31",
@@ -99,6 +107,7 @@
       "name": "Philips",
       "position": "ERASMUS Research Intern",
       "location": "Eindhoven, Netherlands",
+      "location_type": "On site",
       "url": "https://www.philips.com",
       "startDate": "2014-06-01",
       "endDate": "2014-08-31",
@@ -188,7 +197,8 @@
         "Combined signal processing and simulation methods to enhance ultrasound image resolution",
         "Included international research placements in Germany, Italy, and the Netherlands"
       ],
-      "url": ""
+      "url": "",
+      "github": ""
     },
     {
       "name": "Pacific Crest Trail — Southbound Thru-Hike",
@@ -198,7 +208,8 @@
         "4,273 km continuous hike from Canada to Mexico",
         "Completed in 130 days, hiking the rarer and logistically harder southbound direction"
       ],
-      "url": ""
+      "url": "",
+      "github": ""
     },
     {
       "name": "Pyrenean Haute Route Thru-Hike",
@@ -208,7 +219,8 @@
         "800 km high-altitude route across the Pyrenees",
         "Completed in 40 days, self-supported"
       ],
-      "url": ""
+      "url": "",
+      "github": ""
     }
   ]
 }

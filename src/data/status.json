@@ -1,7 +1,12 @@
 {
-  "builtAt": null,
-  "commit": null,
-  "testsPassed": null,
-  "testCount": 0,
-  "lighthouse": { "performance": 0, "accessibility": 0, "bestPractices": 0, "seo": 0 }
+  "builtAt": "2026-07-20T23:04:14.659Z",
+  "commit": "b1d184f",
+  "testsPassed": true,
+  "testCount": 7,
+  "lighthouse": {
+    "performance": 99,
+    "accessibility": 83,
+    "bestPractices": 100,
+    "seo": 100
+  }
 }

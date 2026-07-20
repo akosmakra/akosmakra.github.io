@@ -24,11 +24,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
-      - uses: withastro/action@v3
+      - run: pnpm run build
+      - uses: actions/upload-pages-artifact@v3
         with:
-          package-manager: pnpm@latest
+          path: ./dist
   deploy:
     needs: build
     runs-on: ubuntu-latest

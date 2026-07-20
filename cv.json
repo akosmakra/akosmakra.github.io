@@ -1,0 +1,214 @@
+{
+  "basics": {
+    "name": "Dr. Ákos Makra",
+    "label": "Test Automation Engineer · PhD in Information Science",
+    "image": "/me_avatar.jpg",
+    "email": "akosmakra@gmail.com",
+    "phone": "+36 20 556 5333",
+    "url": "https://akosmakra.github.io",
+    "summary": "Test Automation Engineer with a PhD in Information Science, specializing in system and E2E test automation (Python, Behave BDD, Selenium, Playwright). Background in biomedical signal processing and ultrasound imaging research, with international research experience in Germany, Italy, and the Netherlands.",
+    "theme": "default",
+    "location": {
+      "address": "",
+      "postalCode": "",
+      "city": "",
+      "countryCode": "",
+      "region": ""
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "ákos-makra",
+        "url": "https://www.linkedin.com/in/%C3%A1kos-makra-bb5436b7/"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Magyar Telekom Nyrt.",
+      "position": "Test Automation Engineer",
+      "url": "https://www.telekom.hu",
+      "startDate": "2024-07-01",
+      "endDate": null,
+      "summary": "Designing and maintaining automated system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles.",
+      "responsibilities": [
+        "Designed, developed, and maintained system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles (Python, Behave BDD, Cucumber/Gherkin, Selenium, Playwright).",
+        "Identified, documented, and tracked defects using log-based root-cause analysis (Kibana/OpenSearch, internal tools).",
+        "Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues."
+      ],
+      "achievements": [
+        "Played a key role in raising automated regression and E2E test suite success rates from under 65% to a consistent 95%+ across multiple major projects, while reducing the number of manually executed regression test cases by 30%."
+      ],
+      "skills": ["Python", "Behave BDD", "Cucumber/Gherkin", "Selenium", "Playwright", "Kibana", "OpenSearch", "Git", "GitLab CI/CD", "Jira", "Confluence", "Zephyr"]
+    },
+    {
+      "name": "Effective Group Talent Solutions Kft. — B. Braun project",
+      "position": "Software Tester",
+      "url": "",
+      "startDate": "2021-11-01",
+      "endDate": "2023-06-01",
+      "summary": "Developed automated integration and unit tests for acute dialysis machines.",
+      "responsibilities": [
+        "Developed automated integration and unit tests for acute dialysis machines (C/C++)."
+      ],
+      "achievements": [],
+      "skills": ["C", "C++", "Git"]
+    },
+    {
+      "name": "MedRes Kft.",
+      "position": "Researcher",
+      "url": "",
+      "startDate": "2019-05-01",
+      "endDate": "2019-09-01",
+      "summary": "Performed ultrasound simulations, device development and testing.",
+      "responsibilities": [
+        "Performed ultrasound simulations, device development and testing (MATLAB, k-Wave)."
+      ],
+      "achievements": [],
+      "skills": ["MATLAB"]
+    },
+    {
+      "name": "Fraunhofer IBMT",
+      "position": "ERASMUS Research Intern",
+      "location": "Sankt Ingbert, Germany",
+      "url": "https://www.ibmt.fraunhofer.de",
+      "startDate": "2016-06-01",
+      "endDate": "2016-07-31",
+      "summary": "Examined biological tissues using scanning acoustic microscopy.",
+      "responsibilities": [
+        "Examined biological tissues using scanning acoustic microscopy (MATLAB)."
+      ],
+      "achievements": [],
+      "skills": ["MATLAB"]
+    },
+    {
+      "name": "University of Florence (MSDLAB)",
+      "position": "ERASMUS Research Intern",
+      "location": "Florence, Italy",
+      "url": "https://www.unifi.it",
+      "startDate": "2015-06-01",
+      "endDate": "2015-07-31",
+      "summary": "Developed real-time imaging and feature extraction for an ultrasound device.",
+      "responsibilities": [
+        "Developed real-time imaging and feature extraction for an ultrasound device (C++)."
+      ],
+      "achievements": [],
+      "skills": ["C++"]
+    },
+    {
+      "name": "Philips",
+      "position": "ERASMUS Research Intern",
+      "location": "Eindhoven, Netherlands",
+      "url": "https://www.philips.com",
+      "startDate": "2014-06-01",
+      "endDate": "2014-08-31",
+      "summary": "Performed surgical biomedical signal analysis and processing.",
+      "responsibilities": [
+        "Performed surgical biomedical signal analysis and processing (MATLAB)."
+      ],
+      "achievements": [],
+      "skills": ["MATLAB"]
+    }
+  ],
+  "volunteer": [],
+  "education": [
+    {
+      "institution": "Roska Tamás Doctoral School of Sciences and Technology",
+      "url": "https://itk.ppke.hu/en",
+      "area": "Information Science (PhD) — \"Ultrasound Image Modelling and Resolution Enhancement\"",
+      "studyType": "PhD",
+      "startDate": "2015-09-01",
+      "endDate": "2020-06-01",
+      "score": "",
+      "courses": []
+    },
+    {
+      "institution": "Pázmány Péter Catholic University",
+      "url": "https://ppke.hu/en",
+      "area": "Info-Bionics Engineering (MSc)",
+      "studyType": "MSc",
+      "startDate": "2014-09-01",
+      "endDate": "2015-06-01",
+      "score": "",
+      "courses": []
+    },
+    {
+      "institution": "Pázmány Péter Catholic University",
+      "url": "https://ppke.hu/en",
+      "area": "Molecular Bionics Engineering (BSc)",
+      "studyType": "BSc",
+      "startDate": "2011-09-01",
+      "endDate": "2014-06-01",
+      "score": "",
+      "courses": []
+    }
+  ],
+  "certificates": [],
+  "publications": [],
+  "skills": [
+    { "name": "Python", "level": "", "keywords": ["Programming & Scripting"] },
+    { "name": "C", "level": "", "keywords": ["Programming & Scripting"] },
+    { "name": "C++", "level": "", "keywords": ["Programming & Scripting"] },
+    { "name": "MATLAB", "level": "", "keywords": ["Programming & Scripting"] },
+    { "name": "SQL", "level": "", "keywords": ["Programming & Scripting"] },
+    { "name": "Behave BDD", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Cucumber/Gherkin", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Selenium", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Playwright", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Jira", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Confluence", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Zephyr", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Git", "level": "", "keywords": ["Tools & Version Control"] },
+    { "name": "GitLab CI/CD", "level": "", "keywords": ["Tools & Version Control"] },
+    { "name": "DOORS", "level": "", "keywords": ["Tools & Version Control"] },
+    { "name": "Kibana", "level": "", "keywords": ["Systems & Monitoring"] },
+    { "name": "OpenSearch", "level": "", "keywords": ["Systems & Monitoring"] },
+    { "name": "Lotus Notes", "level": "", "keywords": ["Systems & Monitoring"] }
+  ],
+  "languages": [
+    { "language": "Hungarian", "fluency": "Native speaker" },
+    { "language": "English", "fluency": "Fluent" },
+    { "language": "German", "fluency": "Intermediate" }
+  ],
+  "interests": [],
+  "references": [],
+  "awards": [
+    { "title": "New National Excellence Scholarship", "date": "2018, 2019", "awarder": "", "summary": "" },
+    { "title": "Young Talent Scholarship", "date": "2017", "awarder": "", "summary": "" },
+    { "title": "PhD Excellence Scholarship", "date": "2016", "awarder": "", "summary": "" },
+    { "title": "Central Fund Scholarship", "date": "2015", "awarder": "", "summary": "" },
+    { "title": "1st Place — Student Scientific Conference", "date": "2014, 2015", "awarder": "", "summary": "" }
+  ],
+  "projects": [
+    {
+      "name": "PhD Research: Ultrasound Image Modelling and Resolution Enhancement",
+      "isActive": false,
+      "description": "PhD thesis research on modelling and improving the resolution of ultrasound images, carried out at the Roska Tamás Doctoral School of Sciences and Technology.",
+      "highlights": [
+        "Combined signal processing and simulation methods to enhance ultrasound image resolution",
+        "Included international research placements in Germany, Italy, and the Netherlands"
+      ],
+      "url": ""
+    },
+    {
+      "name": "Pacific Crest Trail — Southbound Thru-Hike",
+      "isActive": false,
+      "description": "First Hungarian to thru-hike the 4,273 km Pacific Crest Trail southbound (2023).",
+      "highlights": [
+        "4,273 km continuous hike from Canada to Mexico",
+        "Completed in 130 days, hiking the rarer and logistically harder southbound direction"
+      ],
+      "url": ""
+    },
+    {
+      "name": "Pyrenean Haute Route Thru-Hike",
+      "isActive": false,
+      "description": "Completed the 800 km Pyrenean Haute Route thru-hike (2021).",
+      "highlights": [
+        "800 km high-altitude route across the Pyrenees",
+        "Completed in 40 days, self-supported"
+      ],
+      "url": ""
+    }
+  ]
+}

@@ -15,7 +15,7 @@ const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 })).filter(({ items }) => items.length > 0);
 ---
 
-<aside class="w-full shrink-0 bg-slate-900 px-8 py-12 text-slate-200 md:w-72 md:sticky md:top-0 md:h-screen md:overflow-y-auto print:h-auto print:w-64 print:bg-slate-900 print:text-slate-200 print:px-6 print:py-8">
+<aside class="w-full shrink-0 bg-slate-900 px-8 py-12 text-slate-200 md:w-72 md:sticky md:top-0 md:h-screen md:overflow-y-auto print:static print:h-auto print:w-full print:overflow-visible print:bg-slate-900 print:text-slate-200 print:px-6 print:py-8">
 	<img class="mx-auto aspect-square w-32 rounded-full object-cover shadow-lg" src={image} alt={name} />
 
 	<div class="mt-8 flex flex-col gap-1.5 text-sm">
@@ -104,3 +104,11 @@ const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 		)
 	}
 </aside>
+
+<style>
+	/* Layout.astro sets a global h1-h4 color tied to the light/dark theme;
+	   the sidebar is always dark, so its headings must stay light regardless of theme. */
+	h4 {
+		color: #f1f5f9;
+	}
+</style>

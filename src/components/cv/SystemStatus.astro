@@ -1,0 +1,68 @@
+---
+import Section from "../Section.astro";
+import status from "@/data/status.json";
+
+const { builtAt, commit, testsPassed, testCount, lighthouse } = status;
+
+const scoreColor = (score: number) => {
+	if (score >= 90) return "text-green-600 dark:text-green-400 border-green-600/30 dark:border-green-400/30";
+	if (score >= 50) return "text-amber-600 dark:text-amber-400 border-amber-600/30 dark:border-amber-400/30";
+	return "text-red-600 dark:text-red-400 border-red-600/30 dark:border-red-400/30";
+};
+
+const scores = builtAt
+	? [
+			{ label: "Performance", value: lighthouse.performance },
+			{ label: "Accessibility", value: lighthouse.accessibility },
+			{ label: "Best Practices", value: lighthouse.bestPractices },
+			{ label: "SEO", value: lighthouse.seo },
+		]
+	: [];
+
+const formattedDate = builtAt
+	? new Date(builtAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" }) + " UTC"
+	: null;
+---
+
+<Section className={`${Astro.props.className} print:hidden`} title="How this site is built">
+	<p class="text-sm text-skin-muted">
+		Static site built with Astro and Tailwind CSS, deployed to GitHub Pages via GitHub Actions. Every deploy runs an automated
+		Playwright test suite and a Lighthouse audit before going live — the results below are from the most recent scheduled check.
+	</p>
+
+	<div class="mt-2 flex flex-wrap items-center gap-3 text-sm">
+		<span class="flex items-center gap-1.5 rounded-md border border-skin-hue/20 bg-skin-button-accent/10 px-3 py-1.5 text-skin-base">
+			{testsPassed === null ? (
+				"Quality checks: not yet run"
+			) : testsPassed ? (
+				<>✓ {testCount} automated checks passing</>
+			) : (
+				<>⚠ automated checks failing</>
+			)}
+		</span>
+		<span class="flex items-center gap-1.5 rounded-md border border-skin-hue/20 bg-skin-button-accent/10 px-3 py-1.5 text-skin-base">
+			🟢 Deployed and live
+		</span>
+	</div>
+
+	{
+		scores.length > 0 && (
+			<div class="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
+				{scores.map(({ label, value }) => (
+					<div class={`flex flex-col items-center gap-1 rounded-lg border bg-skin-button-accent/5 py-3 ${scoreColor(value)}`}>
+						<span class="text-2xl font-bold">{value}</span>
+						<span class="text-xs text-skin-muted">{label}</span>
+					</div>
+				))}
+			</div>
+		)
+	}
+
+	{
+		formattedDate && (
+			<p class="mt-1 text-xs text-skin-muted">
+				Last quality check: {formattedDate} · commit {commit}
+			</p>
+		)
+	}
+</Section>

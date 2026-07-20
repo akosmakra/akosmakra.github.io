@@ -1,4 +1,4 @@
-import { chromium } from "playwright";
+import { chromium } from "@playwright/test";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { existsSync, statSync } from "node:fs";

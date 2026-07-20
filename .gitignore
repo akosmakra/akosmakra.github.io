@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # local folders
 .history
+
+# test artifacts
+test-results/
+playwright-report/

@@ -5,6 +5,7 @@ import Sidebar from "@/components/cv/Sidebar.astro";
 import Header from "@/components/cv/Header.astro";
 import Education from "@/components/sections/Education.astro";
 import Experience from "@/components/sections/Experience.astro";
+import SystemStatus from "@/components/cv/SystemStatus.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
 import ThemeSwitch from "@/components/ThemeSwitch.astro";
 
@@ -23,6 +24,7 @@ const { name, label } = basics;
 			<div class="mt-10 flex flex-col gap-10 print:mt-6 print:gap-6">
 				<Experience />
 				<Education />
+				<SystemStatus />
 			</div>
 		</main>
 	</div>

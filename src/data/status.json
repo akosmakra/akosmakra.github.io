@@ -1,0 +1,7 @@
+{
+  "builtAt": null,
+  "commit": null,
+  "testsPassed": null,
+  "testCount": 0,
+  "lighthouse": { "performance": 0, "accessibility": 0, "bestPractices": 0, "seo": 0 }
+}

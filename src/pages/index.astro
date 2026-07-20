@@ -1,14 +1,10 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-import About from "@/components/sections/About.astro";
+import Sidebar from "@/components/cv/Sidebar.astro";
+import Header from "@/components/cv/Header.astro";
 import Education from "@/components/sections/Education.astro";
 import Experience from "@/components/sections/Experience.astro";
-import Hero from "@/components/sections/Hero.astro";
-import Highlights from "@/components/sections/Highlights.astro";
-import Projects from "@/components/sections/Projects.astro";
-import Skills from "@/components/sections/Skills.astro";
-import Tail from "@/components/sections/Tail.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
 import ThemeSwitch from "@/components/ThemeSwitch.astro";
 
@@ -16,22 +12,20 @@ import { basics } from "@cv";
 const { name, label } = basics;
 ---
 
-<Layout title={`${name} Portafolio - ${label}`}>
-	<main class="relative grid max-w-7xl gap-12 p-8 max-sm:py-16 md:grid-cols-6 md:p-16 xl:gap-24 print:max-w-none print:grid-cols-1 print:gap-6">
-		<div class="space-y-6 md:col-span-2 print:col-span-1 print:grid print:grid-cols-2 print:gap-5 print:space-y-0">
-			<Hero />
-			<About />
-			<Highlights />
-			<ThemeSwitch />
-		</div>
-		<div class="space-y-12 md:col-span-4 print:col-span-1 print:grid print:grid-cols-4 print:gap-2 print:space-y-0">
-			<Experience className="print:col-span-3" />
-			<Projects className="print:hidden" />
-			<Skills className="print:hidden" />
-			<Education className="order-first" />
-		</div>
-		<Tail />
-	</main>
+<Layout title={`${name} — ${label}`}>
+	<div class="flex min-h-screen flex-col md:flex-row print:flex-row">
+		<Sidebar />
+		<main class="flex-1 bg-skin-fill px-6 py-10 sm:px-10 md:px-14 md:py-16 print:px-6 print:py-8">
+			<div class="mb-6 flex justify-end print:hidden">
+				<ThemeSwitch />
+			</div>
+			<Header />
+			<div class="mt-10 flex flex-col gap-10 print:mt-6 print:gap-6">
+				<Experience />
+				<Education />
+			</div>
+		</main>
+	</div>
 
 	<KeyboardManager />
 </Layout>
@@ -40,9 +34,5 @@ const { name, label } = basics;
 	@page {
 		size: auto;
 		margin: 0mm;
-	}
-	main {
-		margin: auto;
-		width: 100%;
 	}
 </style>

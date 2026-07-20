@@ -157,8 +157,8 @@
   "skills": [
     { "name": "Python", "level": "", "keywords": ["Programming & Scripting"] },
     { "name": "C", "level": "", "keywords": ["Programming & Scripting"] },
-    { "name": "C++", "level": "", "keywords": ["Programming & Scripting"] },
     { "name": "MATLAB", "level": "", "keywords": ["Programming & Scripting"] },
+    { "name": "C++", "level": "", "keywords": ["Programming & Scripting"] },
     { "name": "SQL", "level": "", "keywords": ["Programming & Scripting"] },
     { "name": "Behave BDD", "level": "", "keywords": ["Test Automation & QA"] },
     { "name": "Cucumber/Gherkin", "level": "", "keywords": ["Test Automation & QA"] },
@@ -175,12 +175,16 @@
     { "name": "Lotus Notes", "level": "", "keywords": ["Systems & Monitoring"] }
   ],
   "languages": [
-    { "language": "Hungarian", "fluency": "Native speaker" },
     { "language": "English", "fluency": "Fluent" },
-    { "language": "German", "fluency": "Intermediate" }
+    { "language": "German", "fluency": "Intermediate" },
+    { "language": "Hungarian", "fluency": "Native speaker" }
   ],
   "interests": [],
   "references": [],
+  "achievements": [
+    "First Hungarian to thru-hike the 4,273 km long Pacific Crest Trail southbound (130 days, 2023)",
+    "Completed the 800 km long Pyrenean Haute Route (40 days, 2021)"
+  ],
   "awards": [
     { "title": "New National Excellence Scholarship", "date": "2018, 2019", "awarder": "", "summary": "" },
     { "title": "Young Talent Scholarship", "date": "2017", "awarder": "", "summary": "" },
@@ -188,39 +192,5 @@
     { "title": "Central Fund Scholarship", "date": "2015", "awarder": "", "summary": "" },
     { "title": "1st Place — Student Scientific Conference", "date": "2014, 2015", "awarder": "", "summary": "" }
   ],
-  "projects": [
-    {
-      "name": "PhD Research: Ultrasound Image Modelling and Resolution Enhancement",
-      "isActive": false,
-      "description": "PhD thesis research on modelling and improving the resolution of ultrasound images, carried out at the Roska Tamás Doctoral School of Sciences and Technology.",
-      "highlights": [
-        "Combined signal processing and simulation methods to enhance ultrasound image resolution",
-        "Included international research placements in Germany, Italy, and the Netherlands"
-      ],
-      "url": "",
-      "github": ""
-    },
-    {
-      "name": "Pacific Crest Trail — Southbound Thru-Hike",
-      "isActive": false,
-      "description": "First Hungarian to thru-hike the 4,273 km Pacific Crest Trail southbound (2023).",
-      "highlights": [
-        "4,273 km continuous hike from Canada to Mexico",
-        "Completed in 130 days, hiking the rarer and logistically harder southbound direction"
-      ],
-      "url": "",
-      "github": ""
-    },
-    {
-      "name": "Pyrenean Haute Route Thru-Hike",
-      "isActive": false,
-      "description": "Completed the 800 km Pyrenean Haute Route thru-hike (2021).",
-      "highlights": [
-        "800 km high-altitude route across the Pyrenees",
-        "Completed in 40 days, self-supported"
-      ],
-      "url": "",
-      "github": ""
-    }
-  ]
+  "projects": []
 }

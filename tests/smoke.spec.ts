@@ -50,3 +50,13 @@ test("no browser console errors on load", async ({ page }) => {
 	await page.waitForLoadState("networkidle");
 	expect(errors).toEqual([]);
 });
+
+test("PhD dissertation link is reachable", async ({ page, request }) => {
+	await page.goto("/");
+	const link = page.getByRole("link", { name: /Ultrasound Image Modelling and Resolution Enhancement/i });
+	await expect(link).toBeVisible();
+	const href = await link.getAttribute("href");
+	expect(href).toBeTruthy();
+	const response = await request.get(href!);
+	expect(response.ok()).toBeTruthy();
+});

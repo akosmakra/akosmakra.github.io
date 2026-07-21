@@ -1,11 +1,60 @@
 ---
 import status from "@/data/status.json";
 
-const { builtAt } = status;
+const { builtAt, testsPassed, testCount } = status;
 
 const formattedDate = builtAt
 	? new Date(builtAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
 	: null;
+
+function formatRunTime(date: Date) {
+	return date.toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
+}
+
+const QUALITY_CHECK_CRON_HOUR_UTC = 3;
+
+const lastRun = builtAt ? new Date(builtAt) : null;
+
+const nextRun = new Date();
+nextRun.setUTCHours(QUALITY_CHECK_CRON_HOUR_UTC, 0, 0, 0);
+if (nextRun.getTime() <= Date.now()) {
+	nextRun.setUTCDate(nextRun.getUTCDate() + 1);
+}
+
+const SMOKE_TESTS = [
+	"page loads with the correct name and title",
+	"sidebar shows a photo and a LinkedIn link",
+	"experience and education sections are present",
+	"dark mode toggle switches the theme",
+	"download CV link points to a PDF",
+	"external links open safely in a new tab",
+	"no browser console errors on load",
+	"PhD dissertation link is reachable",
+];
 ---
 
-{formattedDate && <div class="w-full pb-14 pt-2 text-center text-[9px] text-skin-muted/35 print:hidden">Last updated {formattedDate}</div>}
+{
+	formattedDate && (
+		<div class="w-full pb-14 pt-2 flex flex-col items-center gap-1 print:hidden">
+			<div class="text-[9px] text-skin-muted/35">Last updated {formattedDate}</div>
+			{testCount > 0 && (
+				<details class="group text-[9px] text-skin-muted/35">
+					<summary class="cursor-pointer list-none marker:content-none">
+						{testCount}/{testCount} smoke tests {testsPassed ? "passed" : "failed"}, last one: {lastRun && formatRunTime(lastRun)}, next one: {formatRunTime(nextRun)}
+					</summary>
+					<ol class="mx-auto mt-1.5 flex w-fit list-inside list-decimal flex-col gap-0.5 text-left text-xs text-skin-muted">
+						{SMOKE_TESTS.map((testName) => (
+							<li>{testName}</li>
+						))}
+					</ol>
+				</details>
+			)}
+		</div>
+	)
+}
+
+<style>
+	summary::-webkit-details-marker {
+		display: none;
+	}
+</style>

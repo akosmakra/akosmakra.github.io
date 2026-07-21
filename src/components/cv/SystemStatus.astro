@@ -42,11 +42,14 @@ const SMOKE_TESTS = [
 					<summary class="cursor-pointer list-none marker:content-none">
 						{testCount}/{testCount} smoke tests {testsPassed ? "passed" : "failed"}, last one: {lastRun && formatRunTime(lastRun)}, next one: {formatRunTime(nextRun)}
 					</summary>
-					<ol class="mx-auto mt-1.5 flex w-fit list-inside list-decimal flex-col gap-0.5 text-left text-xs text-skin-muted">
+					<ul class="mx-auto mt-1.5 flex w-fit flex-col gap-0.5 text-left text-xs text-skin-muted">
 						{SMOKE_TESTS.map((testName) => (
-							<li>{testName}</li>
+							<li class="flex items-center gap-1.5">
+								<span class="text-green-400" aria-hidden="true">✓</span>
+								{testName}
+							</li>
 						))}
-					</ol>
+					</ul>
 				</details>
 			)}
 		</div>

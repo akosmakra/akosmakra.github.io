@@ -36,12 +36,13 @@
       "responsibilities": [
         "Designed, developed, and maintained system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles (Python, Behave BDD, Cucumber/Gherkin, Selenium, Playwright).",
         "Identified, documented, and tracked defects using log-based root-cause analysis (Kibana/OpenSearch, internal tools).",
-        "Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues."
+        "Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues.",
+        "Interviewed and evaluated candidates for open Test Automation Engineer positions."
       ],
       "achievements": [
         "Played a key role in raising automated regression and E2E test suite success rates from under 65% to a consistent 95%+ across multiple major projects, while reducing the number of manually executed regression test cases by 30%."
       ],
-      "skills": ["Python", "Behave BDD", "Cucumber/Gherkin", "Selenium", "Playwright", "Kibana", "OpenSearch", "Git", "GitLab CI/CD", "Jira", "Confluence", "Zephyr"]
+      "skills": ["Python", "Behave BDD", "Cucumber", "Gherkin", "Selenium", "Playwright", "Kibana", "OpenSearch", "Git", "GitLab CI/CD", "Jira", "Confluence", "Zephyr"]
     },
     {
       "name": "Effective Group Talent Solutions Kft. — B. Braun project",
@@ -56,7 +57,7 @@
         "Developed automated integration and unit tests for acute dialysis machines (C/C++)."
       ],
       "achievements": [],
-      "skills": ["C", "C++", "Git"]
+      "skills": ["C", "C++", "Git", "Embedded Systems", "Jenkins"]
     },
     {
       "name": "MedRes Kft.",
@@ -71,7 +72,7 @@
         "Performed ultrasound simulations, device development and testing (MATLAB, k-Wave)."
       ],
       "achievements": [],
-      "skills": ["MATLAB"]
+      "skills": ["MATLAB", "k-Wave"]
     },
     {
       "name": "Fraunhofer IBMT",
@@ -86,7 +87,7 @@
         "Examined biological tissues using scanning acoustic microscopy (MATLAB)."
       ],
       "achievements": [],
-      "skills": ["MATLAB"]
+      "skills": ["MATLAB", "LabVIEW"]
     },
     {
       "name": "University of Florence (MSDLAB)",
@@ -101,7 +102,7 @@
         "Developed real-time imaging and feature extraction for an ultrasound device (C++)."
       ],
       "achievements": [],
-      "skills": ["C++"]
+      "skills": ["C++", "MATLAB"]
     },
     {
       "name": "Philips",

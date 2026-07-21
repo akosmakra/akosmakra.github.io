@@ -1,4 +1,4 @@
-## Print-friendly CV
+## CV
 
 Personal CV site built with Astro and Tailwind CSS. Content is data-driven from `cv.json`, with a light/dark theme switch and an exportable PDF version.
 

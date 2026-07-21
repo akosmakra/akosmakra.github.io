@@ -12,26 +12,26 @@ import { work } from "@cv"
       return (
         <li class="relative print:break-inside-avoid print:py-2">
           <div class="group relative grid pb-1 print:pb-0 transition-all print:grid-cols-1 print:gap-1 sm:grid-cols-12 sm:gap-8 md:gap-6 lg:hover:!opacity-100 ">
-            <header class="relative mt-1 text-sm font-semibold sm:col-span-2">
+            <header class="relative mt-1 text-base font-semibold sm:col-span-2">
               <time datetime={startDate} data-title={startDate}>{startYear}</time> - <time datetime={endDate} data-title={endDate}>{endYear}</time>
             </header>
             <div class="relative flex flex-col pb-6 print:pb-0 before:-ml-6 sm:col-span-10 before:w-px print:before:hidden before:absolute before:bg-skin-muted before:opacity-30 before:h-full before:mt-2">
             <div class="absolute w-2 h-2 bg-skin-muted rounded-full mt-2 -translate-x-[1.71rem] ring print:hidden ring-skin-fill"></div>
               <h3>
-                <div class="inline-flex items-center text-xl print:text-base leading-tight" aria-label="{position} - {company}">
+                <div class="inline-flex items-center text-2xl print:text-base leading-tight" aria-label="{position} - {company}">
                   <span>{position} <span>@</span> <span class="text-skin-hue">{name}</span></span>
                 </div>
               </h3>
               {(location || location_type) && (
-                <div class="text-sm text-skin-muted">
+                <div class="text-base text-skin-muted">
                   {location} {location && location_type && '-'} {location_type}
                 </div>
               )}
-              <div class="mt-4 print:gap-0 flex flex-col gap-4 print:text-xs text-base">
+              <div class="mt-4 print:gap-0 flex flex-col gap-4 print:text-xs text-lg">
                 {bullets.length > 0 && (
                   <ul class="text-skin-muted [&>li]:ml-4 flex list-disc flex-col gap-2">
                     {bullets.map(bullet => (
-                      <li>{bullet}</li>
+                      <li class="[text-align:justify]">{bullet}</li>
                     ))}
                   </ul>
                 )}
@@ -39,7 +39,7 @@ import { work } from "@cv"
                 {skills && skills.length > 0 && (
                   <ul class="flex print:hidden flex-wrap gap-2" aria-label="Technologies used">
                     {skills.map(skill => (
-                      <li class="bg-skin-button-accent/20 border-skin-hue/20 text-skin-base print:p-0 print:bg-transparent print:text-zinc-800 flex gap-1 items-center border-solid print:border-none border rounded-md px-2 py-0.5 text-sm">
+                      <li class="bg-skin-button-accent/20 border-skin-hue/20 text-skin-base print:p-0 print:bg-transparent print:text-zinc-800 flex gap-1 items-center border-solid print:border-none border rounded-md px-2 py-0.5 text-base">
                         <span>{skill}</span>
                       </li>
                     ))}

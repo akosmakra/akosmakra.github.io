@@ -34,14 +34,9 @@
       "endDate": null,
       "summary": "Designing and maintaining automated system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles.",
       "responsibilities": [
-        "Designed, developed, and maintained system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles (Python, Behave BDD, Cucumber/Gherkin, Selenium, Playwright).",
-        "Identified, documented, and tracked defects using log-based root-cause analysis (Kibana/OpenSearch, internal tools).",
-        "Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues.",
-        "Interviewed and evaluated candidates for open Test Automation Engineer positions."
+        "Designed, developed, and maintained system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles. Identified, documented, and tracked defects using log-based root-cause analysis. Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues. Interviewed and evaluated candidates for open Test Automation Engineer positions. Played a key role in raising automated regression and E2E test suite success rates from under 65% to a consistent 95%+ across multiple major projects, while reducing the number of manually executed regression test cases by 30%."
       ],
-      "achievements": [
-        "Played a key role in raising automated regression and E2E test suite success rates from under 65% to a consistent 95%+ across multiple major projects, while reducing the number of manually executed regression test cases by 30%."
-      ],
+      "achievements": [],
       "skills": ["Python", "Behave BDD", "Cucumber", "Gherkin", "Selenium", "Playwright", "Kibana", "OpenSearch", "Git", "GitLab CI/CD", "Jira", "Confluence", "Zephyr"]
     },
     {
@@ -54,7 +49,7 @@
       "endDate": "2023-06-01",
       "summary": "Developed automated integration and unit tests for acute dialysis machines.",
       "responsibilities": [
-        "Developed automated integration and unit tests for acute dialysis machines (C/C++)."
+        "Developed automated unit and integration tests for safety-critical software running on acute dialysis machines. This work closed a significant testing backlog in legacy code."
       ],
       "achievements": [],
       "skills": ["C", "C++", "Git", "Embedded Systems", "Jenkins", "DOORS"]
@@ -69,7 +64,7 @@
       "endDate": "2019-09-01",
       "summary": "Performed ultrasound simulations, device development and testing.",
       "responsibilities": [
-        "Performed ultrasound simulations, device development and testing (MATLAB, k-Wave)."
+        "Performed ultrasound simulations, device development and testing."
       ],
       "achievements": [],
       "skills": ["MATLAB", "k-Wave"]
@@ -84,7 +79,7 @@
       "endDate": "2016-07-31",
       "summary": "Examined biological tissues using scanning acoustic microscopy.",
       "responsibilities": [
-        "Examined biological tissues using scanning acoustic microscopy (MATLAB)."
+        "Examined biological tissues using scanning acoustic microscopy."
       ],
       "achievements": [],
       "skills": ["MATLAB", "LabVIEW"]
@@ -99,7 +94,7 @@
       "endDate": "2015-07-31",
       "summary": "Developed real-time imaging and feature extraction for an ultrasound device.",
       "responsibilities": [
-        "Developed real-time imaging and feature extraction for an ultrasound device (C++)."
+        "Developed real-time imaging and feature extraction for an ultrasound device."
       ],
       "achievements": [],
       "skills": ["C++", "MATLAB"]
@@ -114,7 +109,7 @@
       "endDate": "2014-08-31",
       "summary": "Performed surgical biomedical signal analysis and processing.",
       "responsibilities": [
-        "Performed surgical biomedical signal analysis and processing (MATLAB)."
+        "Performed surgical biomedical signal analysis and processing."
       ],
       "achievements": [],
       "skills": ["MATLAB"]

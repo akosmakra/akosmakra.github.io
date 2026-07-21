@@ -1,28 +1,11 @@
 ---
 import status from "@/data/status.json";
 
-const { builtAt, commit, testsPassed, lighthouse } = status;
+const { builtAt } = status;
 
-function relativeTime(iso: string): string {
-	const diffMs = Date.now() - new Date(iso).getTime();
-	const minutes = Math.round(diffMs / 60000);
-	if (minutes < 60) return `${minutes}m ago`;
-	const hours = Math.round(minutes / 60);
-	if (hours < 24) return `${hours}h ago`;
-	const days = Math.round(hours / 24);
-	return `${days}d ago`;
-}
-
-const deployedLabel = builtAt ? relativeTime(builtAt) : null;
-
-const lighthouseTitle = builtAt
-	? `Lighthouse — Performance ${lighthouse.performance} · Accessibility ${lighthouse.accessibility} · Best Practices ${lighthouse.bestPractices} · SEO ${lighthouse.seo}`
-	: "Lighthouse — not yet measured";
+const formattedDate = builtAt
+	? new Date(builtAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
+	: null;
 ---
 
-<div class="mt-2 flex items-center gap-2 font-mono text-xs text-skin-muted print:hidden" title={lighthouseTitle}>
-	<span class={`inline-block h-1.5 w-1.5 rounded-full ${testsPassed ? "bg-green-600 dark:bg-green-400" : "bg-skin-muted"}`}></span>
-	<span>⎇ master</span>
-	{commit && <span>{testsPassed ? "✓" : "✗"} {commit}</span>}
-	{deployedLabel && <span>· last updated {deployedLabel}</span>}
-</div>
+{formattedDate && <p class="mt-2 text-[11px] text-skin-muted/60 print:hidden">Last updated {formattedDate}</p>}

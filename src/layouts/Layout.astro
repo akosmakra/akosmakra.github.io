@@ -37,6 +37,8 @@ const { image, summary, url, theme } = basics;
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Itim" />
 
+		{import.meta.env.PROD && <script data-goatcounter="https://akosmakra.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>}
+
 		<Vengeance />
 	</head>
 	<body data-theme={theme} class="relative bg-skin-fill">

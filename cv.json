@@ -57,7 +57,7 @@
         "Developed automated integration and unit tests for acute dialysis machines (C/C++)."
       ],
       "achievements": [],
-      "skills": ["C", "C++", "Git", "Embedded Systems", "Jenkins"]
+      "skills": ["C", "C++", "Git", "Embedded Systems", "Jenkins", "DOORS"]
     },
     {
       "name": "MedRes Kft.",
@@ -124,8 +124,10 @@
   "education": [
     {
       "institution": "Roska Tamás Doctoral School of Sciences and Technology",
-      "url": "https://itk.ppke.hu/en",
-      "area": "Information Science (PhD) — \"Ultrasound Image Modelling and Resolution Enhancement\"",
+      "url": "",
+      "area": "Information Science (PhD)",
+      "thesisTitle": "Ultrasound Image Modelling and Resolution Enhancement",
+      "thesisUrl": "https://real-phd.mtak.hu/933/1/MakraAkos_PhDissertation_DOI.pdf",
       "studyType": "PhD",
       "startDate": "2015-09-01",
       "endDate": "2020-06-01",
@@ -134,7 +136,7 @@
     },
     {
       "institution": "Pázmány Péter Catholic University",
-      "url": "https://ppke.hu/en",
+      "url": "",
       "area": "Info-Bionics Engineering (MSc)",
       "studyType": "MSc",
       "startDate": "2014-09-01",
@@ -144,7 +146,7 @@
     },
     {
       "institution": "Pázmány Péter Catholic University",
-      "url": "https://ppke.hu/en",
+      "url": "",
       "area": "Molecular Bionics Engineering (BSc)",
       "studyType": "BSc",
       "startDate": "2011-09-01",
@@ -183,8 +185,7 @@
   "interests": [],
   "references": [],
   "achievements": [
-    "First Hungarian to thru-hike the 4,273 km long Pacific Crest Trail southbound (130 days, 2023)",
-    "Completed the 800 km long Pyrenean Haute Route (40 days, 2021)"
+    "First Hungarian to thru-hike the 4,273 km long Pacific Crest Trail southbound (130 days, 2023) and the 800 km long Pyrenean Haute Route (40 days, 2021)"
   ],
   "awards": [
     { "title": "New National Excellence Scholarship", "date": "2018, 2019", "awarder": "", "summary": "" },

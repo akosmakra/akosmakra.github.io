@@ -2,7 +2,7 @@
 import status from "@/data/status.json";
 import { SMOKE_TESTS } from "@/data/smokeTests";
 
-const { builtAt, testsPassed, testCount, lighthouse } = status;
+const { builtAt, testsPassed, testCount } = status;
 
 const formattedDate = builtAt
 	? new Date(builtAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Budapest" })
@@ -47,14 +47,6 @@ if (nextRun.getTime() <= Date.now()) {
 						))}
 					</ul>
 				</details>
-			)}
-			{lighthouse && (
-				<div class="flex gap-2 text-[8px] text-skin-muted/20" title="Lighthouse scores">
-					<span>⚡ {lighthouse.performance}</span>
-					<span>♿ {lighthouse.accessibility}</span>
-					<span>✓ {lighthouse.bestPractices}</span>
-					<span>🔍 {lighthouse.seo}</span>
-				</div>
 			)}
 		</div>
 	)

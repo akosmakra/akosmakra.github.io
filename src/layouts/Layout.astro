@@ -9,7 +9,20 @@ interface Props {
 
 const { title } = Astro.props;
 
-const { image, summary, url, theme } = basics;
+const { name, image, email, summary, url, theme, profiles } = basics;
+
+const absoluteImageUrl = new URL(image, url).toString();
+
+const personLd = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name,
+	email,
+	image: absoluteImageUrl,
+	url,
+	jobTitle: "Test Automation Engineer",
+	sameAs: profiles.map((profile) => profile.url),
+};
 ---
 
 <!doctype html>
@@ -21,21 +34,24 @@ const { image, summary, url, theme } = basics;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preload" as="image" href={image} />
+		<link rel="canonical" href={url} />
 
 		<meta property="og:url" content={url} />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={summary} />
-		<meta property="og:image" content="" />
+		<meta property="og:image" content={absoluteImageUrl} />
 
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
 		<meta property="twitter:url" content={url} />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={summary} />
-		<meta name="twitter:image" content="" />
+		<meta name="twitter:image" content={absoluteImageUrl} />
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Itim" />
+
+		<script type="application/ld+json" set:html={JSON.stringify(personLd)} />
 
 		{import.meta.env.PROD && <script data-goatcounter="https://akosmakra.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>}
 

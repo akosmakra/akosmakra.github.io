@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://akosmakra.github.io/sitemap.xml
+Sitemap: https://akosmakra.github.io/sitemap-index.xml

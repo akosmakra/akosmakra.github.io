@@ -171,7 +171,7 @@
 		);
 
 		const timing = document.createElement("div");
-		timing.className = "mb-2 flex items-stretch gap-4 rounded-lg border border-slate-700/60 bg-black/20 px-4 py-2.5 text-[14px]";
+		timing.className = "mb-2 grid grid-cols-3 divide-x divide-slate-700/60 rounded-lg border border-slate-700/60 bg-black/20 py-2.5 text-[14px]";
 		lines.appendChild(timing);
 
 		const rows = new Map<string, HTMLDivElement>();
@@ -205,14 +205,13 @@
 			}
 			const elapsed = Math.round((Date.now() - startedAt) / 1000);
 			const remaining = Math.ceil((expiresAt - Date.now()) / 1000);
-			timing.className = "mb-2 flex items-stretch gap-4 rounded-lg border border-slate-700/60 bg-black/20 px-4 py-2.5 text-[14px]";
+			timing.className = "mb-2 grid grid-cols-2 divide-x divide-slate-700/60 rounded-lg border border-slate-700/60 bg-black/20 py-2.5 text-[14px]";
 			timing.innerHTML = `
-				<div class="flex flex-col">
+				<div class="flex flex-col items-center gap-0.5 px-3">
 					<span class="text-[11px] uppercase tracking-wider text-slate-500">Elapsed</span>
 					<span class="font-semibold text-slate-300">${elapsed}s</span>
 				</div>
-				<div class="w-px bg-slate-700"></div>
-				<div class="flex flex-col">
+				<div class="flex flex-col items-center gap-0.5 px-3">
 					<span class="text-[11px] uppercase tracking-wider text-slate-500">Cooldown</span>
 					<span class="font-semibold text-amber-300">${remaining}s</span>
 				</div>
@@ -224,16 +223,15 @@
 			const refreshGlyph = Date.now() < refreshPulseUntil ? "↻" : "·";
 			const nextLabel = expiresAt === null ? "—" : Date.now() >= expiresAt ? "now" : `${Math.ceil((expiresAt - Date.now()) / 1000)}s`;
 			timing.innerHTML = `
-				<div class="flex flex-col">
+				<div class="flex flex-col items-center gap-0.5 px-3">
 					<span class="text-[11px] uppercase tracking-wider text-slate-500">Elapsed</span>
 					<span class="font-semibold text-slate-300">${elapsed}s</span>
 				</div>
-				<div class="w-px bg-slate-700"></div>
-				<div class="flex flex-col">
+				<div class="flex flex-col items-center gap-0.5 px-3">
 					<span class="text-[11px] uppercase tracking-wider text-slate-500">Cooldown</span>
 					<span class="font-semibold text-amber-300">${nextLabel}</span>
 				</div>
-				<div class="ml-auto flex flex-col items-end">
+				<div class="flex flex-col items-center gap-0.5 px-3">
 					<span class="text-[11px] uppercase tracking-wider text-slate-500">Refresh</span>
 					<span class="text-slate-400">${refreshGlyph} ${POLL_INTERVAL_MS / 1000}s</span>
 				</div>

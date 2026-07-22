@@ -5,11 +5,11 @@ import { SMOKE_TESTS } from "@/data/smokeTests";
 const { builtAt, testsPassed, testCount } = status;
 
 const formattedDate = builtAt
-	? new Date(builtAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
+	? new Date(builtAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "Europe/Budapest" })
 	: null;
 
 function formatRunTime(date: Date) {
-	return date.toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
+	return date.toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Budapest", timeZoneName: "short" });
 }
 
 const QUALITY_CHECK_CRON_HOUR_UTC = 3;

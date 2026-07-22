@@ -57,6 +57,6 @@ test("PhD dissertation link is reachable", async ({ page, request }) => {
 	await expect(link).toBeVisible();
 	const href = await link.getAttribute("href");
 	expect(href).toBeTruthy();
-	const response = await request.get(href!);
+	const response = await request.head(href!);
 	expect(response.ok()).toBeTruthy();
 });

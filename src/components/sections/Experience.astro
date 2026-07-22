@@ -16,7 +16,7 @@ import { work } from "@cv"
               <time datetime={startDate} data-title={startDate}>{startYear}</time> - <time datetime={endDate} data-title={endDate}>{endYear}</time>
             </header>
             <div class="relative flex flex-col pb-6 print:pb-0 before:-ml-6 sm:col-span-10 before:w-px print:before:hidden before:absolute before:bg-skin-muted before:opacity-30 before:h-full before:mt-2">
-            <div class="absolute left-0 top-0 w-2 h-2 bg-skin-muted rounded-full mt-2 -translate-x-[1.71rem] ring print:hidden ring-skin-fill"></div>
+            <div class="timeline-dot absolute left-0 top-0 w-2 h-2 bg-skin-muted rounded-full mt-2 ring print:hidden ring-skin-fill"></div>
               <h3>
                 <div class="inline-flex items-center text-2xl print:text-base leading-tight" aria-label="{position} - {company}">
                   <span>{position} <span>@</span> <span class="text-skin-hue">{name}</span></span>
@@ -57,5 +57,12 @@ import { work } from "@cv"
 <style>
   li::marker {
     color: var(--color-accent);
+  }
+
+  /* Plain `transform`, not Tailwind's `-translate-x-[…]` utility: Tailwind v4 compiles
+     that to `translate:var(--tw-translate-x)var(--tw-translate-y)` with no space between
+     the two var() calls, which Chromium tolerates but Firefox silently drops. */
+  .timeline-dot {
+    transform: translateX(-1.71rem);
   }
 </style>

@@ -43,7 +43,7 @@ const { image, summary, url, theme } = basics;
 	</head>
 	<body data-theme={theme} class="relative bg-skin-fill">
 		<div class="absolute top-0 -z-10 h-full w-full print:hidden">
-			<div class="bg-skin-hue/10 absolute bottom-auto left-[20%] right-auto top-0 h-[200px] w-[200px] -translate-x-[30%] translate-y-[20%] rounded-full blur-[80px] invert-0 dark:bg-white/5"></div>
+			<div class="bg-blob bg-skin-hue/10 absolute bottom-auto left-[20%] right-auto top-0 h-[200px] w-[200px] rounded-full blur-[80px] invert-0 dark:bg-white/5"></div>
 		</div>
 		<slot />
 		<style is:global>
@@ -99,6 +99,13 @@ const { image, summary, url, theme } = basics;
 
 			.print {
 				display: none !important;
+			}
+
+			/* Plain `transform`, not Tailwind's `-translate-x-[…]`/`translate-y-[…]` utilities:
+			   Tailwind v4 compiles those to `translate:var(--tw-translate-x)var(--tw-translate-y)`
+			   with no space between the two var() calls, which Firefox silently drops. */
+			.bg-blob {
+				transform: translate(-30%, 20%);
 			}
 
 			.dev * {

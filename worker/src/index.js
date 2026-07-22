@@ -2,9 +2,9 @@ const ALLOWED_ORIGIN = "https://akosmakra.github.io";
 const REPO = "akosmakra/akosmakra.github.io";
 const WORKFLOW_FILE = "live-smoke-tests.yml";
 const LOCK_KEY = "active-run";
-// A bit longer than the client's own OVERALL_TIMEOUT_MS (180s) so the lock never
-// expires before the client itself would have given up watching the run.
-const LOCK_TTL_SECONDS = 210;
+// Deliberate cooldown between triggers: once someone starts a run, no new run can be
+// started for this long, regardless of how quickly the underlying pipeline finishes.
+const LOCK_TTL_SECONDS = 300;
 
 function corsHeaders() {
 	return {
@@ -56,11 +56,6 @@ async function handleTrigger(env) {
 	return jsonResponse({ ok: true, startedAt, expiresAt: startedAt + LOCK_TTL_SECONDS * 1000 });
 }
 
-async function handleRelease(env) {
-	await env.SMOKE_LOCK.delete(LOCK_KEY);
-	return jsonResponse({ ok: true });
-}
-
 async function handleRuns(env) {
 	const res = await githubApi(`/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/runs?event=workflow_dispatch&per_page=5`, env);
 	const body = await res.text();
@@ -83,10 +78,6 @@ export default {
 
 		if (request.method === "POST" && url.pathname === "/trigger") {
 			return handleTrigger(env);
-		}
-
-		if (request.method === "POST" && url.pathname === "/release") {
-			return handleRelease(env);
 		}
 
 		if (request.method === "GET" && url.pathname === "/runs") {

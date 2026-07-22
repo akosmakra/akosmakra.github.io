@@ -143,7 +143,7 @@
 		const intro = makeLine(
 			"text-slate-500",
 			existingRun
-				? "Resuming a run already in progress — showing its live status…"
+				? "Showing the status of the most recent run…"
 				: `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions… (typically ${TYPICAL_RUN_LABEL})`,
 		);
 		lines.appendChild(intro);
@@ -175,7 +175,7 @@
 				</div>
 				<div class="w-px bg-slate-700"></div>
 				<div class="flex flex-col">
-					<span class="text-[9px] uppercase tracking-wider text-slate-500">Next run</span>
+					<span class="text-[9px] uppercase tracking-wider text-slate-500">Cooldown</span>
 					<span class="font-semibold text-amber-300">${nextLabel}</span>
 				</div>
 				<div class="ml-auto flex flex-col items-end">
@@ -214,7 +214,7 @@
 			}
 
 			intro.textContent = serverAlreadyRunning
-				? `A run is already in progress (started ${formatClock(startedAt)}) — showing its live status…`
+				? `A run from ${formatClock(startedAt)} is still on cooldown — showing its status…`
 				: "Triggered — waiting for GitHub Actions to pick it up…";
 
 			const lookupDeadline = Date.now() + RUN_LOOKUP_TIMEOUT_MS;
@@ -294,13 +294,6 @@
 
 		stopTiming();
 		clearStoredRun();
-		if (allDone) {
-			try {
-				await fetch(`${WORKER_URL}/release`, { method: "POST" });
-			} catch {
-				// best-effort — the lock will still expire on its own via TTL
-			}
-		}
 		const summary = makeLine(
 			"mt-3 border-t border-slate-700 pt-2 font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
 			allDone

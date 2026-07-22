@@ -43,10 +43,10 @@ if (nextRun.getTime() <= Date.now()) {
 					</ul>
 					<button
 						type="button"
-						class="mx-auto mt-1.5 block text-xs text-skin-hue underline decoration-dotted underline-offset-2 hover:text-skin-base"
+						class="mx-auto mt-2 flex w-fit items-center gap-1.5 rounded-full border border-skin-hue/30 bg-skin-hue/10 px-3 py-1 text-xs font-medium text-skin-hue transition-colors hover:bg-skin-hue/20"
 						onclick="window.dispatchEvent(new CustomEvent('run-tests-easter-egg'))"
 					>
-						▶ Run Smoke Tests Live
+						<span aria-hidden="true">▶</span> Run Smoke Tests Live
 					</button>
 				</details>
 			)}

@@ -51,9 +51,9 @@ const personLd = {
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Itim" />
 
-		<script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(personLd)} />
 
-		{import.meta.env.PROD && <script data-goatcounter="https://akosmakra.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>}
+		{import.meta.env.PROD && <script is:inline data-goatcounter="https://akosmakra.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>}
 
 		<Vengeance />
 	</head>

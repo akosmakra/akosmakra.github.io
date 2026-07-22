@@ -25,6 +25,42 @@
 	const POLL_INTERVAL_MS = 3000;
 	const OVERALL_TIMEOUT_MS = 180000;
 	const TYPICAL_RUN_LABEL = "~1 min";
+	const STORAGE_KEY = "cv-smoke-test-run";
+
+	interface StoredRun {
+		runId: number;
+		startedAt: number;
+	}
+
+	function getStoredRun(): StoredRun | null {
+		try {
+			const raw = localStorage.getItem(STORAGE_KEY);
+			if (!raw) return null;
+			const parsed = JSON.parse(raw);
+			if (typeof parsed.runId === "number" && typeof parsed.startedAt === "number") {
+				if (Date.now() - parsed.startedAt < OVERALL_TIMEOUT_MS) return parsed;
+			}
+		} catch {
+			// ignore malformed/inaccessible storage
+		}
+		return null;
+	}
+
+	function storeRun(runId: number, startedAt: number) {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify({ runId, startedAt }));
+		} catch {
+			// ignore storage failures (private browsing, quota, etc.)
+		}
+	}
+
+	function clearStoredRun() {
+		try {
+			localStorage.removeItem(STORAGE_KEY);
+		} catch {
+			// ignore
+		}
+	}
 
 	interface GhJob {
 		name: string;
@@ -95,7 +131,12 @@
 		};
 		updateProgress(0);
 
-		const intro = makeLine("text-slate-500", `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions…`);
+		const existingRun = getStoredRun();
+
+		const intro = makeLine(
+			"text-slate-500",
+			existingRun ? "A run is already in progress — resuming its live status…" : `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions…`,
+		);
 		lines.appendChild(intro);
 
 		const timing = makeLine("text-xs text-slate-600", "");
@@ -109,7 +150,7 @@
 			setRowState(row, "pending", title);
 		});
 
-		const startedAt = Date.now();
+		const startedAt = existingRun ? existingRun.startedAt : Date.now();
 		let refreshPulseUntil = 0;
 
 		const renderTiming = () => {
@@ -126,43 +167,48 @@
 		const timingInterval = window.setInterval(renderTiming, 1000);
 		const stopTiming = () => window.clearInterval(timingInterval);
 
-		try {
-			const triggerRes = await fetch(`${WORKER_URL}/trigger`, { method: "POST" });
-			if (!triggerRes.ok) throw new Error(`trigger failed (${triggerRes.status})`);
-		} catch (err) {
-			stopTiming();
-			intro.className = "text-red-400";
-			intro.textContent = `Couldn't start the test run (${err instanceof Error ? err.message : "network error"}). Try again in a moment.`;
-			return;
-		}
-
-		intro.textContent = "Triggered — waiting for GitHub Actions to pick it up…";
-
-		let runId: number | null = null;
-		const lookupDeadline = Date.now() + RUN_LOOKUP_TIMEOUT_MS;
-		while (Date.now() < lookupDeadline && runId === null) {
-			await wait(RUN_LOOKUP_INTERVAL_MS);
-			if (!isCurrent()) {
-				stopTiming();
-				return;
-			}
-			try {
-				pulseRefresh();
-				const res = await fetch(`${WORKER_URL}/runs`);
-				if (res.status === 403) break;
-				const data = await res.json();
-				const match = (data.workflow_runs ?? []).find((run: { created_at: string }) => new Date(run.created_at).getTime() >= startedAt - 5000);
-				if (match) runId = match.id;
-			} catch {
-				// transient network hiccup, keep retrying until the deadline
-			}
-		}
+		let runId: number | null = existingRun ? existingRun.runId : null;
 
 		if (runId === null) {
-			stopTiming();
-			intro.className = "text-amber-400";
-			intro.textContent = "Triggered, but couldn't locate the run to track live — it's still running in the background.";
-			return;
+			try {
+				const triggerRes = await fetch(`${WORKER_URL}/trigger`, { method: "POST" });
+				if (!triggerRes.ok) throw new Error(`trigger failed (${triggerRes.status})`);
+			} catch (err) {
+				stopTiming();
+				intro.className = "text-red-400";
+				intro.textContent = `Couldn't start the test run (${err instanceof Error ? err.message : "network error"}). Try again in a moment.`;
+				return;
+			}
+
+			intro.textContent = "Triggered — waiting for GitHub Actions to pick it up…";
+
+			const lookupDeadline = Date.now() + RUN_LOOKUP_TIMEOUT_MS;
+			while (Date.now() < lookupDeadline && runId === null) {
+				await wait(RUN_LOOKUP_INTERVAL_MS);
+				if (!isCurrent()) {
+					stopTiming();
+					return;
+				}
+				try {
+					pulseRefresh();
+					const res = await fetch(`${WORKER_URL}/runs`);
+					if (res.status === 403) break;
+					const data = await res.json();
+					const match = (data.workflow_runs ?? []).find((run: { created_at: string }) => new Date(run.created_at).getTime() >= startedAt - 5000);
+					if (match) runId = match.id;
+				} catch {
+					// transient network hiccup, keep retrying until the deadline
+				}
+			}
+
+			if (runId === null) {
+				stopTiming();
+				intro.className = "text-amber-400";
+				intro.textContent = "Triggered, but couldn't locate the run to track live — it's still running in the background.";
+				return;
+			}
+
+			storeRun(runId, startedAt);
 		}
 
 		intro.textContent = "Tracking status via GitHub Actions";
@@ -212,6 +258,7 @@
 		}
 
 		stopTiming();
+		clearStoredRun();
 		const summary = makeLine(
 			"mt-3 border-t border-slate-700 pt-2 font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
 			allDone

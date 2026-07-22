@@ -14,7 +14,7 @@ const { name, label } = basics;
 		<ThemeSwitch />
 		<button
 			type="button"
-			class="no-print group flex w-fit items-center gap-2 rounded-lg border border-skin-hue/40 bg-skin-hue/10 px-4 py-2 text-sm font-semibold text-skin-hue shadow-sm transition-all hover:border-skin-hue hover:bg-skin-hue/20 hover:shadow-md active:scale-95"
+			class="no-print group flex w-fit items-center gap-2 rounded-lg border border-skin-hue/40 bg-skin-hue/10 px-4 py-2 text-sm font-semibold text-[color-mix(in_srgb,var(--color-accent)_80%,black)] shadow-sm transition-all hover:border-skin-hue hover:bg-skin-hue/20 hover:shadow-md active:scale-95 dark:text-[color-mix(in_srgb,var(--color-accent)_80%,white)]"
 			onclick="window.dispatchEvent(new CustomEvent('run-tests-easter-egg'))"
 		>
 			<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="shrink-0 transition-transform group-hover:scale-110" aria-hidden="true">

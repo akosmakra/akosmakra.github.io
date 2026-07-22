@@ -5,9 +5,55 @@ const WORKFLOW_FILE = "live-smoke-tests.yml";
 function corsHeaders() {
 	return {
 		"Access-Control-Allow-Origin": ALLOWED_ORIGIN,
-		"Access-Control-Allow-Methods": "POST, OPTIONS",
+		"Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 		"Access-Control-Allow-Headers": "Content-Type",
 	};
+}
+
+function jsonResponse(body, status = 200) {
+	return new Response(JSON.stringify(body), {
+		status,
+		headers: { ...corsHeaders(), "Content-Type": "application/json" },
+	});
+}
+
+async function githubApi(path, env, init = {}) {
+	return fetch(`https://api.github.com${path}`, {
+		...init,
+		headers: {
+			Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+			Accept: "application/vnd.github+json",
+			"User-Agent": "cv-smoke-test-trigger-worker",
+			...(init.headers ?? {}),
+		},
+	});
+}
+
+async function handleTrigger(env) {
+	const res = await githubApi(`/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`, env, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ ref: "master" }),
+	});
+
+	if (!res.ok) {
+		const detail = await res.text();
+		return jsonResponse({ error: "dispatch_failed", status: res.status, detail }, 502);
+	}
+
+	return jsonResponse({ ok: true, triggeredAt: Date.now() });
+}
+
+async function handleRuns(env) {
+	const res = await githubApi(`/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/runs?event=workflow_dispatch&per_page=5`, env);
+	const body = await res.text();
+	return new Response(body, { status: res.status, headers: { ...corsHeaders(), "Content-Type": "application/json" } });
+}
+
+async function handleJobs(runId, env) {
+	const res = await githubApi(`/repos/${REPO}/actions/runs/${runId}/jobs`, env);
+	const body = await res.text();
+	return new Response(body, { status: res.status, headers: { ...corsHeaders(), "Content-Type": "application/json" } });
 }
 
 export default {
@@ -16,31 +62,22 @@ export default {
 			return new Response(null, { headers: corsHeaders() });
 		}
 
-		if (request.method !== "POST") {
-			return new Response("Method not allowed", { status: 405, headers: corsHeaders() });
+		const url = new URL(request.url);
+
+		if (request.method === "POST" && url.pathname === "/trigger") {
+			return handleTrigger(env);
 		}
 
-		const response = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-				Accept: "application/vnd.github+json",
-				"User-Agent": "cv-smoke-test-trigger-worker",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ ref: "master" }),
-		});
-
-		if (!response.ok) {
-			const detail = await response.text();
-			return new Response(JSON.stringify({ error: "dispatch_failed", status: response.status, detail }), {
-				status: 502,
-				headers: { ...corsHeaders(), "Content-Type": "application/json" },
-			});
+		if (request.method === "GET" && url.pathname === "/runs") {
+			return handleRuns(env);
 		}
 
-		return new Response(JSON.stringify({ ok: true, triggeredAt: Date.now() }), {
-			headers: { ...corsHeaders(), "Content-Type": "application/json" },
-		});
+		if (request.method === "GET" && url.pathname === "/jobs") {
+			const runId = url.searchParams.get("run_id");
+			if (!runId) return jsonResponse({ error: "missing run_id" }, 400);
+			return handleJobs(runId, env);
+		}
+
+		return new Response("Not found", { status: 404, headers: corsHeaders() });
 	},
 };

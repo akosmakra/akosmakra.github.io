@@ -23,8 +23,8 @@
 	const REPO = "akosmakra/akosmakra.github.io";
 	const WORKFLOW_FILE = "live-smoke-tests.yml";
 	const RUN_LOOKUP_TIMEOUT_MS = 20000;
-	const RUN_LOOKUP_INTERVAL_MS = 2000;
-	const POLL_INTERVAL_MS = 4000;
+	const RUN_LOOKUP_INTERVAL_MS = 1500;
+	const POLL_INTERVAL_MS = 2000;
 	const OVERALL_TIMEOUT_MS = 180000;
 
 	interface GhJob {
@@ -83,7 +83,7 @@
 		const startedAt = Date.now();
 
 		try {
-			const triggerRes = await fetch(WORKER_URL, { method: "POST" });
+			const triggerRes = await fetch(`${WORKER_URL}/trigger`, { method: "POST" });
 			if (!triggerRes.ok) throw new Error(`trigger failed (${triggerRes.status})`);
 		} catch (err) {
 			intro.className = "text-red-400";
@@ -98,7 +98,7 @@
 		while (Date.now() < lookupDeadline && runId === null) {
 			await wait(RUN_LOOKUP_INTERVAL_MS);
 			try {
-				const res = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/runs?event=workflow_dispatch&per_page=5`);
+				const res = await fetch(`${WORKER_URL}/runs`);
 				if (res.status === 403) break;
 				const data = await res.json();
 				const match = (data.workflow_runs ?? []).find((run: { created_at: string }) => new Date(run.created_at).getTime() >= startedAt - 5000);
@@ -136,7 +136,7 @@
 
 		while (Date.now() < overallDeadline && !allDone) {
 			try {
-				const res = await fetch(`https://api.github.com/repos/${REPO}/actions/runs/${runId}/jobs`);
+				const res = await fetch(`${WORKER_URL}/jobs?run_id=${runId}`);
 				if (res.status === 403) {
 					rateLimited = true;
 					break;

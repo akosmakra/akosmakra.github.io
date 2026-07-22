@@ -41,6 +41,13 @@ if (nextRun.getTime() <= Date.now()) {
 							</li>
 						))}
 					</ul>
+					<button
+						type="button"
+						class="mx-auto mt-1.5 block text-xs text-skin-hue underline decoration-dotted underline-offset-2 hover:text-skin-base"
+						onclick="window.dispatchEvent(new CustomEvent('run-tests-easter-egg'))"
+					>
+						▶ Run these live
+					</button>
 				</details>
 			)}
 		</div>

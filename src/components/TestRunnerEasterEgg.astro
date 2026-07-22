@@ -375,7 +375,7 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 				finalPassedCount = passedCount;
 				lines.scrollTop = lines.scrollHeight;
 
-				if (jobs.length === SMOKE_TESTS.length && completedCount === SMOKE_TESTS.length) {
+				if (completedCount === SMOKE_TESTS.length) {
 					allDone = true;
 				}
 			} catch {

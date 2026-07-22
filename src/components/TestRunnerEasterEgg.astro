@@ -26,11 +26,33 @@
 	const RUN_LOOKUP_INTERVAL_MS = 1500;
 	const POLL_INTERVAL_MS = 2000;
 	const OVERALL_TIMEOUT_MS = 180000;
+	const TYPICAL_RUN_SECONDS = 45;
 
 	interface GhJob {
 		name: string;
 		status: string;
 		conclusion: string | null;
+	}
+
+	type RowState = "pending" | "running" | "success" | "failed";
+
+	const ICONS: Record<RowState, string> = {
+		pending: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>`,
+		running: `<svg class="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity="0.25"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>`,
+		success: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M8 12.5l2.5 2.5 5-5" stroke="#1e1e1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>`,
+		failed: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M9 9l6 6M15 9l-6 6" stroke="#1e1e1e" stroke-width="2" stroke-linecap="round"></path></svg>`,
+	};
+
+	const ROW_COLORS: Record<RowState, string> = {
+		pending: "text-slate-600",
+		running: "text-amber-300",
+		success: "text-green-400",
+		failed: "text-red-400",
+	};
+
+	function setRowState(row: HTMLElement, state: RowState, title: string) {
+		row.className = `flex items-center gap-2 ${ROW_COLORS[state]}`;
+		row.innerHTML = `<span class="shrink-0">${ICONS[state]}</span><span>${title}</span>`;
 	}
 
 	function makeLine(className: string, text: string): HTMLParagraphElement {
@@ -44,7 +66,12 @@
 		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
+	let activeRun = 0;
+
 	async function runTestAnimation() {
+		const myRun = ++activeRun;
+		const isCurrent = () => myRun === activeRun;
+
 		const overlay = document.getElementById("test-runner-overlay");
 		const lines = document.getElementById("test-runner-lines");
 		const progress = document.getElementById("test-runner-progress");
@@ -73,19 +100,33 @@
 		const intro = makeLine("text-slate-500", `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions…`);
 		lines.appendChild(intro);
 
+		const timing = makeLine("text-xs text-slate-600", "");
+		lines.appendChild(timing);
+
 		const rows = new Map<string, HTMLParagraphElement>();
 		SMOKE_TESTS.forEach((title) => {
-			const row = makeLine("text-slate-600", `· ${title}`);
+			const row = document.createElement("p");
 			lines.appendChild(row);
 			rows.set(title, row);
+			setRowState(row, "pending", title);
 		});
 
 		const startedAt = Date.now();
+		let refreshFlash = false;
+
+		const timingInterval = window.setInterval(() => {
+			const elapsed = Math.round((Date.now() - startedAt) / 1000);
+			const refreshGlyph = refreshFlash ? "↻" : "·";
+			refreshFlash = !refreshFlash;
+			timing.textContent = `Refreshes every ${POLL_INTERVAL_MS / 1000}s ${refreshGlyph} ~${TYPICAL_RUN_SECONDS}s typical run · ${elapsed}s elapsed`;
+		}, 1000);
+		const stopTiming = () => window.clearInterval(timingInterval);
 
 		try {
 			const triggerRes = await fetch(`${WORKER_URL}/trigger`, { method: "POST" });
 			if (!triggerRes.ok) throw new Error(`trigger failed (${triggerRes.status})`);
 		} catch (err) {
+			stopTiming();
 			intro.className = "text-red-400";
 			intro.textContent = `Couldn't start the test run (${err instanceof Error ? err.message : "network error"}). Try again in a moment.`;
 			return;
@@ -97,6 +138,10 @@
 		const lookupDeadline = Date.now() + RUN_LOOKUP_TIMEOUT_MS;
 		while (Date.now() < lookupDeadline && runId === null) {
 			await wait(RUN_LOOKUP_INTERVAL_MS);
+			if (!isCurrent()) {
+				stopTiming();
+				return;
+			}
 			try {
 				const res = await fetch(`${WORKER_URL}/runs`);
 				if (res.status === 403) break;
@@ -109,6 +154,7 @@
 		}
 
 		if (runId === null) {
+			stopTiming();
 			intro.className = "text-amber-400";
 			intro.textContent = "Triggered, but couldn't locate the run to track live — it's still running on GitHub Actions.";
 			const link = document.createElement("a");
@@ -135,6 +181,10 @@
 		let rateLimited = false;
 
 		while (Date.now() < overallDeadline && !allDone) {
+			if (!isCurrent()) {
+				stopTiming();
+				return;
+			}
 			try {
 				const res = await fetch(`${WORKER_URL}/jobs?run_id=${runId}`);
 				if (res.status === 403) {
@@ -150,16 +200,9 @@
 					if (!row) return;
 					if (job.status === "completed") {
 						doneCount++;
-						if (job.conclusion === "success") {
-							row.className = "text-green-400";
-							row.textContent = `✓ ${job.name}`;
-						} else {
-							row.className = "text-red-400";
-							row.textContent = `✗ ${job.name}`;
-						}
+						setRowState(row, job.conclusion === "success" ? "success" : "failed", job.name);
 					} else if (job.status === "in_progress") {
-						row.className = "text-amber-300";
-						row.textContent = `⏳ ${job.name}`;
+						setRowState(row, "running", job.name);
 					}
 				});
 
@@ -176,10 +219,11 @@
 			if (!allDone) await wait(POLL_INTERVAL_MS);
 		}
 
+		stopTiming();
 		const summary = makeLine(
 			"mt-3 border-t border-slate-700 pt-2 font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
 			allDone
-				? `${SMOKE_TESTS.length} passed · thanks for testing the deploy 👋`
+				? `${SMOKE_TESTS.length} passed · thanks for testing the deployed site 👋`
 				: rateLimited
 					? "GitHub API rate limit hit — open the run link above to see the result."
 					: "Taking longer than expected — open the run link above to see the result.",

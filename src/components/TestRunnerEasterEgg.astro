@@ -142,11 +142,14 @@
 
 		const intro = makeLine(
 			"text-slate-500",
-			existingRun ? "A run is already in progress — resuming its live status…" : `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions…`,
+			existingRun
+				? "Resuming a run already in progress — showing its live status…"
+				: `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions… (typically ${TYPICAL_RUN_LABEL})`,
 		);
 		lines.appendChild(intro);
 
-		const timing = makeLine("text-xs text-slate-600", "");
+		const timing = document.createElement("div");
+		timing.className = "mb-1 flex items-stretch gap-3 rounded-md border border-slate-700/60 bg-black/20 px-3 py-1.5 text-[11px]";
 		lines.appendChild(timing);
 
 		const rows = new Map<string, HTMLDivElement>();
@@ -164,8 +167,22 @@
 		const renderTiming = () => {
 			const elapsed = Math.round((Date.now() - startedAt) / 1000);
 			const refreshGlyph = Date.now() < refreshPulseUntil ? "↻" : "·";
-			const nextAvailable = expiresAt === null ? "" : Date.now() >= expiresAt ? " · next run available now" : ` · next run available in ${Math.ceil((expiresAt - Date.now()) / 1000)}s`;
-			timing.textContent = `Refreshes every ${POLL_INTERVAL_MS / 1000}s ${refreshGlyph} ${TYPICAL_RUN_LABEL} typical runtime · ${elapsed}s elapsed${nextAvailable}`;
+			const nextLabel = expiresAt === null ? "—" : Date.now() >= expiresAt ? "now" : `${Math.ceil((expiresAt - Date.now()) / 1000)}s`;
+			timing.innerHTML = `
+				<div class="flex flex-col">
+					<span class="text-[9px] uppercase tracking-wider text-slate-500">Elapsed</span>
+					<span class="font-semibold text-slate-300">${elapsed}s</span>
+				</div>
+				<div class="w-px bg-slate-700"></div>
+				<div class="flex flex-col">
+					<span class="text-[9px] uppercase tracking-wider text-slate-500">Next run</span>
+					<span class="font-semibold text-amber-300">${nextLabel}</span>
+				</div>
+				<div class="ml-auto flex flex-col items-end">
+					<span class="text-[9px] uppercase tracking-wider text-slate-500">Refresh</span>
+					<span class="text-slate-400">${refreshGlyph} ${POLL_INTERVAL_MS / 1000}s</span>
+				</div>
+			`;
 		};
 		const pulseRefresh = () => {
 			refreshPulseUntil = Date.now() + 600;

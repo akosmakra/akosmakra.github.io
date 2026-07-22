@@ -1,8 +1,17 @@
+---
+import { basics } from "@cv";
+
+const { email, profiles } = basics;
+const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.url ?? "";
+---
+
 <div
 	id="test-runner-overlay"
 	class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 p-4"
 	role="dialog"
 	aria-label="Test run animation"
+	data-contact-email={email}
+	data-contact-linkedin={linkedinUrl}
 >
 	<div class="flex max-h-[90vh] w-[min(94vw,43rem)] flex-col overflow-hidden rounded-xl bg-[#1e1e1e] font-mono text-sm text-slate-300 shadow-2xl">
 		<div class="flex shrink-0 items-center gap-2 bg-[#2d2d2d] px-4 py-2.5">
@@ -303,6 +312,7 @@
 		const overallDeadline = Date.now() + OVERALL_TIMEOUT_MS;
 		let allDone = false;
 		let rateLimited = false;
+		let finalPassedCount = 0;
 
 		while (Date.now() < overallDeadline && !allDone) {
 			if (!isCurrent()) {
@@ -318,23 +328,27 @@
 				}
 				const data = await res.json();
 				const jobs: GhJob[] = data.jobs ?? [];
-				let doneCount = 0;
+				let completedCount = 0;
+				let passedCount = 0;
 
 				jobs.forEach((job) => {
 					const row = rows.get(job.name);
 					if (!row) return;
 					if (job.status === "completed") {
-						doneCount++;
-						setRowState(row, job.conclusion === "success" ? "success" : "failed", job.name);
+						completedCount++;
+						const success = job.conclusion === "success";
+						if (success) passedCount++;
+						setRowState(row, success ? "success" : "failed", job.name);
 					} else if (job.status === "in_progress") {
 						setRowState(row, "running", job.name);
 					}
 				});
 
-				updateProgress(doneCount);
+				updateProgress(passedCount);
+				finalPassedCount = passedCount;
 				lines.scrollTop = lines.scrollHeight;
 
-				if (jobs.length === SMOKE_TESTS.length && doneCount === SMOKE_TESTS.length) {
+				if (jobs.length === SMOKE_TESTS.length && completedCount === SMOKE_TESTS.length) {
 					allDone = true;
 				}
 			} catch {
@@ -353,15 +367,29 @@
 		} else {
 			renderReady();
 		}
+		const fullyPassed = allDone && finalPassedCount === SMOKE_TESTS.length;
+
 		const summary = makeLine(
-			"mt-4 border-t border-slate-700 pt-3 text-[15px] font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
+			"mt-4 border-t border-slate-700 pt-3 text-[15px] font-semibold " + (fullyPassed ? "text-green-400" : "text-amber-400"),
 			allDone
-				? `${SMOKE_TESTS.length}/${SMOKE_TESTS.length} passed · thanks for testing the deployed site 👋`
+				? fullyPassed
+					? `${SMOKE_TESTS.length}/${SMOKE_TESTS.length} passed · thanks for testing the deployed site 👋`
+					: `${finalPassedCount}/${SMOKE_TESTS.length} passed`
 				: rateLimited
 					? "Rate limit hit while checking status — the run is still going in the background."
 					: "Taking longer than expected — the run is still going in the background.",
 		);
 		lines.appendChild(summary);
+
+		if (allDone && !fullyPassed) {
+			const contactEmail = overlay.dataset.contactEmail ?? "";
+			const contactLinkedin = overlay.dataset.contactLinkedin ?? "";
+			const contact = document.createElement("div");
+			contact.className = "mt-2 text-[13px] font-normal text-slate-400";
+			contact.innerHTML = `Spotted the one that broke? I'd genuinely appreciate a heads-up — reach out via <a class="underline hover:text-slate-200" href="mailto:${contactEmail}">email</a> or <a class="underline hover:text-slate-200" href="${contactLinkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`;
+			lines.appendChild(contact);
+		}
+
 		lines.scrollTop = lines.scrollHeight;
 	}
 

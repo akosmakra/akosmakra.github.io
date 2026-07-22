@@ -26,3 +26,15 @@ pnpm-debug.log*
 # test artifacts
 test-results/
 playwright-report/
+
+# local planning notes
+SMOKE_TEST_TRIGGER_PLAN.md
+
+# cloudflare worker
+worker/node_modules/
+worker/.wrangler/
+
+# secrets - never commit
+*token*.txt
+*.pem
+*.key

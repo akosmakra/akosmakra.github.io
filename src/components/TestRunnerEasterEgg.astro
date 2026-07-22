@@ -4,60 +4,55 @@
 	role="dialog"
 	aria-label="Test run animation"
 >
-	<div class="w-[min(90vw,28rem)] overflow-hidden rounded-lg bg-[#1e1e1e] font-mono text-sm text-slate-300 shadow-2xl">
+	<div class="w-[min(90vw,30rem)] overflow-hidden rounded-lg bg-[#1e1e1e] font-mono text-sm text-slate-300 shadow-2xl">
 		<div class="flex items-center gap-1.5 bg-[#2d2d2d] px-3 py-2">
 			<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
 			<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
 			<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
 			<span class="ml-2 text-xs text-slate-500">smoke.spec.ts</span>
+			<span id="test-runner-progress" class="ml-auto text-xs text-slate-500"></span>
 		</div>
-		<div id="test-runner-lines" class="min-h-[220px] space-y-1 p-4"></div>
+		<div id="test-runner-lines" class="max-h-[320px] min-h-[260px] space-y-1 overflow-y-auto p-4"></div>
 	</div>
 </div>
 
 <script>
-	const TESTS = [
-		"page loads with the correct name and title",
-		"sidebar shows a photo and a LinkedIn link",
-		"experience and education sections are present",
-		"dark mode toggle switches the theme",
-		"download CV link points to a PDF",
-		"external links open safely in a new tab",
-		"no browser console errors on load",
-	];
+	import { SMOKE_TESTS } from "@/data/smokeTests";
 
-	function runTestAnimation() {
+	const WORKER_URL = "https://cv-smoke-test-trigger.akosmakra.workers.dev";
+	const REPO = "akosmakra/akosmakra.github.io";
+	const WORKFLOW_FILE = "live-smoke-tests.yml";
+	const RUN_LOOKUP_TIMEOUT_MS = 20000;
+	const RUN_LOOKUP_INTERVAL_MS = 2000;
+	const POLL_INTERVAL_MS = 4000;
+	const OVERALL_TIMEOUT_MS = 180000;
+
+	interface GhJob {
+		name: string;
+		status: string;
+		conclusion: string | null;
+	}
+
+	function makeLine(className: string, text: string): HTMLParagraphElement {
+		const p = document.createElement("p");
+		p.className = className;
+		p.textContent = text;
+		return p;
+	}
+
+	function wait(ms: number): Promise<void> {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
+
+	async function runTestAnimation() {
 		const overlay = document.getElementById("test-runner-overlay");
 		const lines = document.getElementById("test-runner-lines");
+		const progress = document.getElementById("test-runner-progress");
 		if (!overlay || !lines) return;
 
 		lines.innerHTML = "";
 		overlay.classList.remove("hidden");
 		overlay.classList.add("flex");
-
-		TESTS.forEach((title, i) => {
-			setTimeout(() => {
-				const p = document.createElement("p");
-				p.className = "text-slate-500";
-				p.textContent = `⏳ ${title}`;
-				lines.appendChild(p);
-
-				setTimeout(() => {
-					p.className = "text-green-400";
-					p.textContent = `✓ ${title}`;
-				}, 200);
-			}, i * 260);
-		});
-
-		setTimeout(
-			() => {
-				const summary = document.createElement("p");
-				summary.className = "mt-3 border-t border-slate-700 pt-2 font-semibold text-green-400";
-				summary.textContent = `${TESTS.length} passed · thanks for testing the deploy 👋`;
-				lines.appendChild(summary);
-			},
-			TESTS.length * 260 + 300,
-		);
 
 		const close = (e: Event) => {
 			if (e.target === overlay || (e as KeyboardEvent).key === "Escape") {
@@ -69,7 +64,131 @@
 		};
 		overlay.addEventListener("click", close);
 		document.addEventListener("keydown", close);
+
+		const updateProgress = (done: number) => {
+			if (progress) progress.textContent = `${done}/${SMOKE_TESTS.length} passed`;
+		};
+		updateProgress(0);
+
+		const intro = makeLine("text-slate-500", `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions…`);
+		lines.appendChild(intro);
+
+		const rows = new Map<string, HTMLParagraphElement>();
+		SMOKE_TESTS.forEach((title) => {
+			const row = makeLine("text-slate-600", `· ${title}`);
+			lines.appendChild(row);
+			rows.set(title, row);
+		});
+
+		const startedAt = Date.now();
+
+		try {
+			const triggerRes = await fetch(WORKER_URL, { method: "POST" });
+			if (!triggerRes.ok) throw new Error(`trigger failed (${triggerRes.status})`);
+		} catch (err) {
+			intro.className = "text-red-400";
+			intro.textContent = `Couldn't start the test run (${err instanceof Error ? err.message : "network error"}). Try again in a moment.`;
+			return;
+		}
+
+		intro.textContent = "Triggered — waiting for GitHub Actions to pick it up…";
+
+		let runId: number | null = null;
+		const lookupDeadline = Date.now() + RUN_LOOKUP_TIMEOUT_MS;
+		while (Date.now() < lookupDeadline && runId === null) {
+			await wait(RUN_LOOKUP_INTERVAL_MS);
+			try {
+				const res = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/runs?event=workflow_dispatch&per_page=5`);
+				if (res.status === 403) break;
+				const data = await res.json();
+				const match = (data.workflow_runs ?? []).find((run: { created_at: string }) => new Date(run.created_at).getTime() >= startedAt - 5000);
+				if (match) runId = match.id;
+			} catch {
+				// transient network hiccup, keep retrying until the deadline
+			}
+		}
+
+		if (runId === null) {
+			intro.className = "text-amber-400";
+			intro.textContent = "Triggered, but couldn't locate the run to track live — it's still running on GitHub Actions.";
+			const link = document.createElement("a");
+			link.className = "mt-1 block text-xs text-slate-500 underline";
+			link.href = `https://github.com/${REPO}/actions/workflows/${WORKFLOW_FILE}`;
+			link.target = "_blank";
+			link.rel = "noopener noreferrer";
+			link.textContent = "View workflow runs on GitHub →";
+			lines.appendChild(link);
+			return;
+		}
+
+		intro.textContent = `Tracking run #${runId} live…`;
+		const link = document.createElement("a");
+		link.className = "mb-1 block text-xs text-slate-500 underline";
+		link.href = `https://github.com/${REPO}/actions/runs/${runId}`;
+		link.target = "_blank";
+		link.rel = "noopener noreferrer";
+		link.textContent = "View this run on GitHub →";
+		lines.insertBefore(link, rows.get(SMOKE_TESTS[0]) ?? null);
+
+		const overallDeadline = Date.now() + OVERALL_TIMEOUT_MS;
+		let allDone = false;
+		let rateLimited = false;
+
+		while (Date.now() < overallDeadline && !allDone) {
+			try {
+				const res = await fetch(`https://api.github.com/repos/${REPO}/actions/runs/${runId}/jobs`);
+				if (res.status === 403) {
+					rateLimited = true;
+					break;
+				}
+				const data = await res.json();
+				const jobs: GhJob[] = data.jobs ?? [];
+				let doneCount = 0;
+
+				jobs.forEach((job) => {
+					const row = rows.get(job.name);
+					if (!row) return;
+					if (job.status === "completed") {
+						doneCount++;
+						if (job.conclusion === "success") {
+							row.className = "text-green-400";
+							row.textContent = `✓ ${job.name}`;
+						} else {
+							row.className = "text-red-400";
+							row.textContent = `✗ ${job.name}`;
+						}
+					} else if (job.status === "in_progress") {
+						row.className = "text-amber-300";
+						row.textContent = `⏳ ${job.name}`;
+					}
+				});
+
+				updateProgress(doneCount);
+				lines.scrollTop = lines.scrollHeight;
+
+				if (jobs.length === SMOKE_TESTS.length && doneCount === SMOKE_TESTS.length) {
+					allDone = true;
+				}
+			} catch {
+				// transient network hiccup, keep polling until the deadline
+			}
+
+			if (!allDone) await wait(POLL_INTERVAL_MS);
+		}
+
+		const summary = makeLine(
+			"mt-3 border-t border-slate-700 pt-2 font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
+			allDone
+				? `${SMOKE_TESTS.length} passed · thanks for testing the deploy 👋`
+				: rateLimited
+					? "GitHub API rate limit hit — open the run link above to see the result."
+					: "Taking longer than expected — open the run link above to see the result.",
+		);
+		lines.appendChild(summary);
+		lines.scrollTop = lines.scrollHeight;
 	}
 
-	window.addEventListener("run-tests-easter-egg", runTestAnimation);
+	window.addEventListener("run-tests-easter-egg", () => {
+		void runTestAnimation();
+	});
 </script>

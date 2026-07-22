@@ -1,0 +1,34 @@
+name: Live Smoke Tests
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test:
+          - "page loads with the correct name and title"
+          - "sidebar shows a photo and a LinkedIn link"
+          - "experience and education sections are present"
+          - "dark mode toggle switches the theme"
+          - "download CV link points to a PDF"
+          - "external links open safely in a new tab"
+          - "no browser console errors on load"
+          - "PhD dissertation link is reachable"
+    name: ${{ matrix.test }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright test --grep "${{ matrix.test }}"
+        env:
+          BASE_URL: https://akosmakra.github.io

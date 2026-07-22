@@ -116,6 +116,33 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		return new Date(ms).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Budapest", timeZoneName: "short" });
 	}
 
+	function renderResultSummary(lines: HTMLElement, overlay: HTMLElement, finalPassedCount: number, allDone: boolean, rateLimited: boolean) {
+		const fullyPassed = allDone && finalPassedCount === SMOKE_TESTS.length;
+
+		const summary = makeLine(
+			"mt-4 border-t border-slate-700 pt-3 text-[15px] font-semibold " + (fullyPassed ? "text-green-400" : "text-amber-400"),
+			allDone
+				? fullyPassed
+					? `${SMOKE_TESTS.length}/${SMOKE_TESTS.length} passed · thanks for testing the deployed site 👋`
+					: `${finalPassedCount}/${SMOKE_TESTS.length} passed`
+				: rateLimited
+					? "Rate limit hit while checking status — the run is still going in the background."
+					: "Taking longer than expected — the run is still going in the background.",
+		);
+		lines.appendChild(summary);
+
+		if (allDone && !fullyPassed) {
+			const contactEmail = overlay.dataset.contactEmail ?? "";
+			const contactLinkedin = overlay.dataset.contactLinkedin ?? "";
+			const contact = document.createElement("div");
+			contact.className = "mt-2 text-[13px] font-normal text-slate-400";
+			contact.innerHTML = `Spotted the one that broke? I'd genuinely appreciate a heads-up — reach out via <a class="underline hover:text-slate-200" href="mailto:${contactEmail}">email</a> or <a class="underline hover:text-slate-200" href="${contactLinkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`;
+			lines.appendChild(contact);
+		}
+
+		lines.scrollTop = lines.scrollHeight;
+	}
+
 	let activeRun = 0;
 
 	async function runTestAnimation() {
@@ -367,33 +394,56 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		} else {
 			renderReady();
 		}
-		const fullyPassed = allDone && finalPassedCount === SMOKE_TESTS.length;
+		renderResultSummary(lines, overlay, finalPassedCount, allDone, rateLimited);
+	}
 
-		const summary = makeLine(
-			"mt-4 border-t border-slate-700 pt-3 text-[15px] font-semibold " + (fullyPassed ? "text-green-400" : "text-amber-400"),
-			allDone
-				? fullyPassed
-					? `${SMOKE_TESTS.length}/${SMOKE_TESTS.length} passed · thanks for testing the deployed site 👋`
-					: `${finalPassedCount}/${SMOKE_TESTS.length} passed`
-				: rateLimited
-					? "Rate limit hit while checking status — the run is still going in the background."
-					: "Taking longer than expected — the run is still going in the background.",
-		);
-		lines.appendChild(summary);
+	function runSimulatedFailure() {
+		const overlay = document.getElementById("test-runner-overlay");
+		const lines = document.getElementById("test-runner-lines");
+		const progress = document.getElementById("test-runner-progress");
+		if (!overlay || !lines) return;
 
-		if (allDone && !fullyPassed) {
-			const contactEmail = overlay.dataset.contactEmail ?? "";
-			const contactLinkedin = overlay.dataset.contactLinkedin ?? "";
-			const contact = document.createElement("div");
-			contact.className = "mt-2 text-[13px] font-normal text-slate-400";
-			contact.innerHTML = `Spotted the one that broke? I'd genuinely appreciate a heads-up — reach out via <a class="underline hover:text-slate-200" href="mailto:${contactEmail}">email</a> or <a class="underline hover:text-slate-200" href="${contactLinkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`;
-			lines.appendChild(contact);
-		}
+		activeRun++;
+		lines.innerHTML = "";
+		overlay.classList.remove("hidden");
+		overlay.classList.add("flex");
 
-		lines.scrollTop = lines.scrollHeight;
+		const close = (e: Event) => {
+			if (e.target === overlay || (e as KeyboardEvent).key === "Escape") {
+				overlay.classList.add("hidden");
+				overlay.classList.remove("flex");
+				overlay.removeEventListener("click", close);
+				document.removeEventListener("keydown", close);
+			}
+		};
+		overlay.addEventListener("click", close);
+		document.addEventListener("keydown", close);
+
+		const statusLog = document.createElement("div");
+		statusLog.className = "mb-3 flex flex-col gap-1 text-[15px]";
+		statusLog.appendChild(makeLine("text-amber-300", "⚠ Simulated run (dev only) — no real tests were triggered"));
+		lines.appendChild(statusLog);
+
+		const failingIndex = Math.floor(Math.random() * SMOKE_TESTS.length);
+		let passedCount = 0;
+		SMOKE_TESTS.forEach((title, i) => {
+			const row = document.createElement("div");
+			lines.appendChild(row);
+			const isFailing = i === failingIndex;
+			if (!isFailing) passedCount++;
+			setRowState(row, isFailing ? "failed" : "success", title);
+		});
+
+		if (progress) progress.textContent = `${passedCount}/${SMOKE_TESTS.length} passed`;
+
+		renderResultSummary(lines, overlay, passedCount, true, false);
 	}
 
 	window.addEventListener("run-tests-easter-egg", () => {
 		void runTestAnimation();
 	});
+
+	if (import.meta.env.DEV) {
+		window.addEventListener("simulate-test-failure-easter-egg", runSimulatedFailure);
+	}
 </script>

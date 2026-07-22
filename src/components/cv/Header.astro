@@ -22,6 +22,16 @@ const { name, label } = basics;
 			</svg>
 			Run Smoke Tests Live
 		</button>
+		{import.meta.env.DEV && (
+			<button
+				type="button"
+				title="Dev only — renders the failure UI locally without triggering a real run"
+				class="no-print flex w-fit items-center gap-2 rounded-lg border border-dashed border-red-500/50 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-500 shadow-sm transition-all hover:border-red-500 hover:bg-red-500/20 active:scale-95"
+				onclick="window.dispatchEvent(new CustomEvent('simulate-test-failure-easter-egg'))"
+			>
+				Simulate Failure
+			</button>
+		)}
 		<a
 			href="/cv.pdf"
 			download

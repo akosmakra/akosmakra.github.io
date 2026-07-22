@@ -30,6 +30,7 @@
 	interface StoredRun {
 		runId: number;
 		startedAt: number;
+		expiresAt: number | null;
 	}
 
 	function getStoredRun(): StoredRun | null {
@@ -38,7 +39,9 @@
 			if (!raw) return null;
 			const parsed = JSON.parse(raw);
 			if (typeof parsed.runId === "number" && typeof parsed.startedAt === "number") {
-				if (Date.now() - parsed.startedAt < OVERALL_TIMEOUT_MS) return parsed;
+				if (Date.now() - parsed.startedAt < OVERALL_TIMEOUT_MS) {
+					return { runId: parsed.runId, startedAt: parsed.startedAt, expiresAt: typeof parsed.expiresAt === "number" ? parsed.expiresAt : null };
+				}
 			}
 		} catch {
 			// ignore malformed/inaccessible storage
@@ -46,9 +49,9 @@
 		return null;
 	}
 
-	function storeRun(runId: number, startedAt: number) {
+	function storeRun(runId: number, startedAt: number, expiresAt: number | null) {
 		try {
-			localStorage.setItem(STORAGE_KEY, JSON.stringify({ runId, startedAt }));
+			localStorage.setItem(STORAGE_KEY, JSON.stringify({ runId, startedAt, expiresAt }));
 		} catch {
 			// ignore storage failures (private browsing, quota, etc.)
 		}
@@ -155,12 +158,14 @@
 		});
 
 		let startedAt = existingRun ? existingRun.startedAt : Date.now();
+		let expiresAt = existingRun ? existingRun.expiresAt : null;
 		let refreshPulseUntil = 0;
 
 		const renderTiming = () => {
 			const elapsed = Math.round((Date.now() - startedAt) / 1000);
 			const refreshGlyph = Date.now() < refreshPulseUntil ? "↻" : "·";
-			timing.textContent = `Refreshes every ${POLL_INTERVAL_MS / 1000}s ${refreshGlyph} ${TYPICAL_RUN_LABEL} typical runtime · ${elapsed}s elapsed`;
+			const nextAvailable = expiresAt === null ? "" : Date.now() >= expiresAt ? " · next run available now" : ` · next run available in ${Math.ceil((expiresAt - Date.now()) / 1000)}s`;
+			timing.textContent = `Refreshes every ${POLL_INTERVAL_MS / 1000}s ${refreshGlyph} ${TYPICAL_RUN_LABEL} typical runtime · ${elapsed}s elapsed${nextAvailable}`;
 		};
 		const pulseRefresh = () => {
 			refreshPulseUntil = Date.now() + 600;
@@ -179,6 +184,7 @@
 				const triggerRes = await fetch(`${WORKER_URL}/trigger`, { method: "POST" });
 				if (!triggerRes.ok) throw new Error(`trigger failed (${triggerRes.status})`);
 				const triggerData = await triggerRes.json();
+				if (typeof triggerData.expiresAt === "number") expiresAt = triggerData.expiresAt;
 				if (triggerData.alreadyRunning && typeof triggerData.startedAt === "number") {
 					serverAlreadyRunning = true;
 					startedAt = triggerData.startedAt;
@@ -220,7 +226,7 @@
 				return;
 			}
 
-			storeRun(runId, startedAt);
+			storeRun(runId, startedAt, expiresAt);
 		}
 
 		intro.textContent = "Tracking status via GitHub Actions";
@@ -271,6 +277,13 @@
 
 		stopTiming();
 		clearStoredRun();
+		if (allDone) {
+			try {
+				await fetch(`${WORKER_URL}/release`, { method: "POST" });
+			} catch {
+				// best-effort — the lock will still expire on its own via TTL
+			}
+		}
 		const summary = makeLine(
 			"mt-3 border-t border-slate-700 pt-2 font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
 			allDone

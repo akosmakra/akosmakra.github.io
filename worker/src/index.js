@@ -36,7 +36,7 @@ async function githubApi(path, env, init = {}) {
 async function handleTrigger(env) {
 	const existing = await env.SMOKE_LOCK.get(LOCK_KEY, { type: "json" });
 	if (existing && typeof existing.startedAt === "number") {
-		return jsonResponse({ ok: false, alreadyRunning: true, startedAt: existing.startedAt });
+		return jsonResponse({ ok: false, alreadyRunning: true, startedAt: existing.startedAt, expiresAt: existing.startedAt + LOCK_TTL_SECONDS * 1000 });
 	}
 
 	const startedAt = Date.now();
@@ -53,7 +53,12 @@ async function handleTrigger(env) {
 
 	await env.SMOKE_LOCK.put(LOCK_KEY, JSON.stringify({ startedAt }), { expirationTtl: LOCK_TTL_SECONDS });
 
-	return jsonResponse({ ok: true, startedAt });
+	return jsonResponse({ ok: true, startedAt, expiresAt: startedAt + LOCK_TTL_SECONDS * 1000 });
+}
+
+async function handleRelease(env) {
+	await env.SMOKE_LOCK.delete(LOCK_KEY);
+	return jsonResponse({ ok: true });
 }
 
 async function handleRuns(env) {
@@ -78,6 +83,10 @@ export default {
 
 		if (request.method === "POST" && url.pathname === "/trigger") {
 			return handleTrigger(env);
+		}
+
+		if (request.method === "POST" && url.pathname === "/release") {
+			return handleRelease(env);
 		}
 
 		if (request.method === "GET" && url.pathname === "/runs") {

@@ -1,7 +1,7 @@
 ---
 import { basics } from "@cv";
 
-const { email, profiles } = basics;
+const { profiles } = basics;
 const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.url ?? "";
 ---
 
@@ -10,7 +10,6 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 	class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 p-4"
 	role="dialog"
 	aria-label="Test run animation"
-	data-contact-email={email}
 	data-contact-linkedin={linkedinUrl}
 >
 	<div class="flex max-h-[90vh] w-[min(94vw,43rem)] flex-col overflow-hidden rounded-xl bg-[#1e1e1e] font-mono text-sm text-slate-300 shadow-2xl">
@@ -132,11 +131,10 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		lines.appendChild(summary);
 
 		if (allDone && !fullyPassed) {
-			const contactEmail = overlay.dataset.contactEmail ?? "";
 			const contactLinkedin = overlay.dataset.contactLinkedin ?? "";
 			const contact = document.createElement("div");
 			contact.className = "mt-2 text-[13px] font-normal text-slate-400";
-			contact.innerHTML = `Spotted the one that broke? I'd genuinely appreciate a heads-up — reach out via <a class="underline hover:text-slate-200" href="mailto:${contactEmail}">email</a> or <a class="underline hover:text-slate-200" href="${contactLinkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`;
+			contact.innerHTML = `Oops, something broke — that's exactly why smoke tests exist. I've already been notified on multiple platforms, but if you want to make sure I see it, feel free to reach out on <a class="underline hover:text-slate-200" href="${contactLinkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`;
 			lines.appendChild(contact);
 		}
 

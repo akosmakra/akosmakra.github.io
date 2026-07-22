@@ -9,7 +9,7 @@
 			<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
 			<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
 			<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
-			<span class="ml-2 text-xs text-slate-500">smoke.spec.ts</span>
+			<span class="ml-2 text-xs text-slate-500">Running Real-Time Smoke Tests</span>
 			<span id="test-runner-progress" class="ml-auto text-xs text-slate-500"></span>
 		</div>
 		<div id="test-runner-lines" class="max-h-[320px] min-h-[260px] space-y-1 overflow-y-auto p-4"></div>
@@ -20,13 +20,11 @@
 	import { SMOKE_TESTS } from "@/data/smokeTests";
 
 	const WORKER_URL = "https://cv-smoke-test-trigger.akosmakra.workers.dev";
-	const REPO = "akosmakra/akosmakra.github.io";
-	const WORKFLOW_FILE = "live-smoke-tests.yml";
 	const RUN_LOOKUP_TIMEOUT_MS = 20000;
-	const RUN_LOOKUP_INTERVAL_MS = 1500;
-	const POLL_INTERVAL_MS = 2000;
+	const RUN_LOOKUP_INTERVAL_MS = 3000;
+	const POLL_INTERVAL_MS = 3000;
 	const OVERALL_TIMEOUT_MS = 180000;
-	const TYPICAL_RUN_SECONDS = 45;
+	const TYPICAL_RUN_LABEL = "~1 min";
 
 	interface GhJob {
 		name: string;
@@ -37,10 +35,10 @@
 	type RowState = "pending" | "running" | "success" | "failed";
 
 	const ICONS: Record<RowState, string> = {
-		pending: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>`,
-		running: `<svg class="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity="0.25"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>`,
-		success: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M8 12.5l2.5 2.5 5-5" stroke="#1e1e1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>`,
-		failed: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M9 9l6 6M15 9l-6 6" stroke="#1e1e1e" stroke-width="2" stroke-linecap="round"></path></svg>`,
+		pending: `<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>`,
+		running: `<svg class="animate-spin" width="21" height="21" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity="0.25"></circle><path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>`,
+		success: `<svg width="21" height="21" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M8 12.5l2.5 2.5 5-5" stroke="#1e1e1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>`,
+		failed: `<svg width="21" height="21" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="currentColor"></circle><path d="M9 9l6 6M15 9l-6 6" stroke="#1e1e1e" stroke-width="2" stroke-linecap="round"></path></svg>`,
 	};
 
 	const ROW_COLORS: Record<RowState, string> = {
@@ -118,7 +116,7 @@
 			const elapsed = Math.round((Date.now() - startedAt) / 1000);
 			const refreshGlyph = refreshFlash ? "↻" : "·";
 			refreshFlash = !refreshFlash;
-			timing.textContent = `Refreshes every ${POLL_INTERVAL_MS / 1000}s ${refreshGlyph} ~${TYPICAL_RUN_SECONDS}s typical run · ${elapsed}s elapsed`;
+			timing.textContent = `Refreshes every ${POLL_INTERVAL_MS / 1000}s ${refreshGlyph} ${TYPICAL_RUN_LABEL} typical run · ${elapsed}s elapsed`;
 		}, 1000);
 		const stopTiming = () => window.clearInterval(timingInterval);
 
@@ -156,25 +154,11 @@
 		if (runId === null) {
 			stopTiming();
 			intro.className = "text-amber-400";
-			intro.textContent = "Triggered, but couldn't locate the run to track live — it's still running on GitHub Actions.";
-			const link = document.createElement("a");
-			link.className = "mt-1 block text-xs text-slate-500 underline";
-			link.href = `https://github.com/${REPO}/actions/workflows/${WORKFLOW_FILE}`;
-			link.target = "_blank";
-			link.rel = "noopener noreferrer";
-			link.textContent = "View workflow runs on GitHub →";
-			lines.appendChild(link);
+			intro.textContent = "Triggered, but couldn't locate the run to track live — it's still running in the background.";
 			return;
 		}
 
 		intro.textContent = `Tracking run #${runId} live…`;
-		const link = document.createElement("a");
-		link.className = "mb-1 block text-xs text-slate-500 underline";
-		link.href = `https://github.com/${REPO}/actions/runs/${runId}`;
-		link.target = "_blank";
-		link.rel = "noopener noreferrer";
-		link.textContent = "View this run on GitHub →";
-		lines.insertBefore(link, rows.get(SMOKE_TESTS[0]) ?? null);
 
 		const overallDeadline = Date.now() + OVERALL_TIMEOUT_MS;
 		let allDone = false;
@@ -223,10 +207,10 @@
 		const summary = makeLine(
 			"mt-3 border-t border-slate-700 pt-2 font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
 			allDone
-				? `${SMOKE_TESTS.length} passed · thanks for testing the deployed site 👋`
+				? `${SMOKE_TESTS.length}/${SMOKE_TESTS.length} passed · thanks for testing the deployed site 👋`
 				: rateLimited
-					? "GitHub API rate limit hit — open the run link above to see the result."
-					: "Taking longer than expected — open the run link above to see the result.",
+					? "Rate limit hit while checking status — the run is still going in the background."
+					: "Taking longer than expected — the run is still going in the background.",
 		);
 		lines.appendChild(summary);
 		lines.scrollTop = lines.scrollHeight;

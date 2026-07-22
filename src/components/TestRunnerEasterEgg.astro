@@ -163,6 +163,39 @@
 		let startedAt = existingRun ? existingRun.startedAt : Date.now();
 		let expiresAt = existingRun ? existingRun.expiresAt : null;
 		let refreshPulseUntil = 0;
+		let timingInterval = 0;
+		const stopTiming = () => window.clearInterval(timingInterval);
+
+		const renderReady = () => {
+			timing.className = "mb-1 flex items-center gap-2 rounded-md border border-green-500/50 bg-green-500/10 px-3 py-1.5 text-[11px] font-semibold text-green-400";
+			timing.innerHTML = `<span aria-hidden="true">●</span> Cooldown over — you can run these again`;
+		};
+
+		const renderCooldownOnly = () => {
+			if (!isCurrent()) {
+				stopTiming();
+				return;
+			}
+			if (expiresAt === null || Date.now() >= expiresAt) {
+				renderReady();
+				stopTiming();
+				return;
+			}
+			const elapsed = Math.round((Date.now() - startedAt) / 1000);
+			const remaining = Math.ceil((expiresAt - Date.now()) / 1000);
+			timing.className = "mb-1 flex items-stretch gap-3 rounded-md border border-slate-700/60 bg-black/20 px-3 py-1.5 text-[11px]";
+			timing.innerHTML = `
+				<div class="flex flex-col">
+					<span class="text-[9px] uppercase tracking-wider text-slate-500">Elapsed</span>
+					<span class="font-semibold text-slate-300">${elapsed}s</span>
+				</div>
+				<div class="w-px bg-slate-700"></div>
+				<div class="flex flex-col">
+					<span class="text-[9px] uppercase tracking-wider text-slate-500">Cooldown</span>
+					<span class="font-semibold text-amber-300">${remaining}s</span>
+				</div>
+			`;
+		};
 
 		const renderTiming = () => {
 			const elapsed = Math.round((Date.now() - startedAt) / 1000);
@@ -190,8 +223,7 @@
 		};
 
 		renderTiming();
-		const timingInterval = window.setInterval(renderTiming, 1000);
-		const stopTiming = () => window.clearInterval(timingInterval);
+		timingInterval = window.setInterval(renderTiming, 1000);
 
 		let runId: number | null = existingRun ? existingRun.runId : null;
 
@@ -292,8 +324,14 @@
 			if (!allDone) await wait(POLL_INTERVAL_MS);
 		}
 
-		stopTiming();
 		clearStoredRun();
+		stopTiming();
+		if (expiresAt !== null && Date.now() < expiresAt) {
+			renderCooldownOnly();
+			timingInterval = window.setInterval(renderCooldownOnly, 1000);
+		} else {
+			renderReady();
+		}
 		const summary = makeLine(
 			"mt-3 border-t border-slate-700 pt-2 font-semibold " + (allDone ? "text-green-400" : "text-amber-400"),
 			allDone

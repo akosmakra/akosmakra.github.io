@@ -140,13 +140,35 @@
 
 		const existingRun = getStoredRun();
 
-		const intro = makeLine(
-			"text-slate-500",
+		const statusLog = document.createElement("div");
+		statusLog.className = "mb-2 flex flex-col gap-0.5";
+		lines.appendChild(statusLog);
+
+		const statusLines: HTMLDivElement[] = [];
+		const ACTIVE_STATUS_CLASS = "text-slate-300";
+		const PAST_STATUS_CLASS = "text-slate-600";
+
+		function logStatus(text: string, activeClass: string = ACTIVE_STATUS_CLASS): HTMLDivElement {
+			statusLines.forEach((el) => {
+				el.className = `${PAST_STATUS_CLASS} transition-colors`;
+			});
+			const line = makeLine(`${activeClass} transition-colors`, text);
+			statusLog.appendChild(line);
+			statusLines.push(line);
+			return line;
+		}
+
+		function dimAllStatusLines() {
+			statusLines.forEach((el) => {
+				el.className = `${PAST_STATUS_CLASS} transition-colors`;
+			});
+		}
+
+		logStatus(
 			existingRun
 				? "Showing the status of the most recent run…"
 				: `Triggering ${SMOKE_TESTS.length} real tests on GitHub Actions… (typically ${TYPICAL_RUN_LABEL})`,
 		);
-		lines.appendChild(intro);
 
 		const timing = document.createElement("div");
 		timing.className = "mb-1 flex items-stretch gap-3 rounded-md border border-slate-700/60 bg-black/20 px-3 py-1.5 text-[11px]";
@@ -240,14 +262,15 @@
 				}
 			} catch (err) {
 				stopTiming();
-				intro.className = "text-red-400";
-				intro.textContent = `Couldn't start the test run (${err instanceof Error ? err.message : "network error"}). Try again in a moment.`;
+				logStatus(`Couldn't start the test run (${err instanceof Error ? err.message : "network error"}). Try again in a moment.`, "text-red-400");
 				return;
 			}
 
-			intro.textContent = serverAlreadyRunning
-				? `A run from ${formatClock(startedAt)} is still on cooldown — showing its status…`
-				: "Triggered — waiting for GitHub Actions to pick it up…";
+			logStatus(
+				serverAlreadyRunning
+					? `A run from ${formatClock(startedAt)} is still on cooldown — showing its status…`
+					: "Triggered — waiting for GitHub Actions to pick it up…",
+			);
 
 			const lookupDeadline = Date.now() + RUN_LOOKUP_TIMEOUT_MS;
 			while (Date.now() < lookupDeadline && runId === null) {
@@ -270,15 +293,14 @@
 
 			if (runId === null) {
 				stopTiming();
-				intro.className = "text-amber-400";
-				intro.textContent = "Triggered, but couldn't locate the run to track live — it's still running in the background.";
+				logStatus("Triggered, but couldn't locate the run to track live — it's still running in the background.", "text-amber-400");
 				return;
 			}
 
 			storeRun(runId, startedAt, expiresAt);
 		}
 
-		intro.textContent = "Tracking status via GitHub Actions";
+		logStatus("Tracking status via GitHub Actions");
 
 		const overallDeadline = Date.now() + OVERALL_TIMEOUT_MS;
 		let allDone = false;
@@ -326,6 +348,7 @@
 
 		clearStoredRun();
 		stopTiming();
+		dimAllStatusLines();
 		if (expiresAt !== null && Date.now() < expiresAt) {
 			renderCooldownOnly();
 			timingInterval = window.setInterval(renderCooldownOnly, 1000);

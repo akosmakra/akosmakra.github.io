@@ -21,6 +21,7 @@ interface Basics {
   phone: string;
   url: string;
   summary: string;
+  metaDescription: string;
   location: Location;
   profiles: Array<Profiles>;
 }

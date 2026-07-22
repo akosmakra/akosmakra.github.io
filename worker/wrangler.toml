@@ -1,3 +1,7 @@
 name = "cv-smoke-test-trigger"
 main = "src/index.js"
 compatibility_date = "2025-01-01"
+
+[[kv_namespaces]]
+binding = "SMOKE_LOCK"
+id = "0794a5e556534a7a80118060024456c9"

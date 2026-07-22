@@ -100,6 +100,10 @@
 		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
+	function formatClock(ms: number): string {
+		return new Date(ms).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
+	}
+
 	let activeRun = 0;
 
 	async function runTestAnimation() {
@@ -150,7 +154,7 @@
 			setRowState(row, "pending", title);
 		});
 
-		const startedAt = existingRun ? existingRun.startedAt : Date.now();
+		let startedAt = existingRun ? existingRun.startedAt : Date.now();
 		let refreshPulseUntil = 0;
 
 		const renderTiming = () => {
@@ -170,9 +174,15 @@
 		let runId: number | null = existingRun ? existingRun.runId : null;
 
 		if (runId === null) {
+			let serverAlreadyRunning = false;
 			try {
 				const triggerRes = await fetch(`${WORKER_URL}/trigger`, { method: "POST" });
 				if (!triggerRes.ok) throw new Error(`trigger failed (${triggerRes.status})`);
+				const triggerData = await triggerRes.json();
+				if (triggerData.alreadyRunning && typeof triggerData.startedAt === "number") {
+					serverAlreadyRunning = true;
+					startedAt = triggerData.startedAt;
+				}
 			} catch (err) {
 				stopTiming();
 				intro.className = "text-red-400";
@@ -180,7 +190,9 @@
 				return;
 			}
 
-			intro.textContent = "Triggered — waiting for GitHub Actions to pick it up…";
+			intro.textContent = serverAlreadyRunning
+				? `A run is already in progress (started ${formatClock(startedAt)}) — showing its live status…`
+				: "Triggered — waiting for GitHub Actions to pick it up…";
 
 			const lookupDeadline = Date.now() + RUN_LOOKUP_TIMEOUT_MS;
 			while (Date.now() < lookupDeadline && runId === null) {

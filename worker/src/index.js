@@ -1,6 +1,10 @@
 const ALLOWED_ORIGIN = "https://akosmakra.github.io";
 const REPO = "akosmakra/akosmakra.github.io";
 const WORKFLOW_FILE = "live-smoke-tests.yml";
+const LOCK_KEY = "active-run";
+// A bit longer than the client's own OVERALL_TIMEOUT_MS (180s) so the lock never
+// expires before the client itself would have given up watching the run.
+const LOCK_TTL_SECONDS = 210;
 
 function corsHeaders() {
 	return {
@@ -30,6 +34,12 @@ async function githubApi(path, env, init = {}) {
 }
 
 async function handleTrigger(env) {
+	const existing = await env.SMOKE_LOCK.get(LOCK_KEY, { type: "json" });
+	if (existing && typeof existing.startedAt === "number") {
+		return jsonResponse({ ok: false, alreadyRunning: true, startedAt: existing.startedAt });
+	}
+
+	const startedAt = Date.now();
 	const res = await githubApi(`/repos/${REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`, env, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -41,7 +51,9 @@ async function handleTrigger(env) {
 		return jsonResponse({ error: "dispatch_failed", status: res.status, detail }, 502);
 	}
 
-	return jsonResponse({ ok: true, triggeredAt: Date.now() });
+	await env.SMOKE_LOCK.put(LOCK_KEY, JSON.stringify({ startedAt }), { expirationTtl: LOCK_TTL_SECONDS });
+
+	return jsonResponse({ ok: true, startedAt });
 }
 
 async function handleRuns(env) {

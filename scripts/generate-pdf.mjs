@@ -1,10 +1,13 @@
 import { chromium } from "@playwright/test";
 import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
+import { readFile, rm } from "node:fs/promises";
 import { existsSync, statSync } from "node:fs";
+import { execSync } from "node:child_process";
 import path from "node:path";
 
-const DIST_DIR = path.resolve(import.meta.dirname, "..", "dist");
+const ROOT_DIR = path.resolve(import.meta.dirname, "..");
+const DIST_DIR = path.join(ROOT_DIR, "dist");
+const PDF_DIST_DIR = path.join(ROOT_DIR, "dist-pdf");
 
 const CONTENT_TYPES = {
 	".html": "text/html",
@@ -18,12 +21,12 @@ const CONTENT_TYPES = {
 	".woff2": "font/woff2",
 };
 
-function serveDist() {
+function serveDir(dir) {
 	return new Promise((resolve) => {
 		const server = createServer(async (req, res) => {
-			let filePath = path.join(DIST_DIR, decodeURIComponent(req.url.split("?")[0]));
+			let filePath = path.join(dir, decodeURIComponent(req.url.split("?")[0]));
 			if (!existsSync(filePath) || statSync(filePath).isDirectory()) {
-				filePath = path.join(DIST_DIR, "index.html");
+				filePath = path.join(dir, "index.html");
 			}
 
 			try {
@@ -40,7 +43,17 @@ function serveDist() {
 	});
 }
 
-const server = await serveDist();
+// Build a separate copy of the site with contact details included (see
+// Sidebar.astro's PDF_BUILD check) — the regular dist/ never contains them,
+// so the deployed HTML stays free of scrapable email/phone info.
+console.log("Building a contact-details-included copy of the site for the PDF...");
+execSync("pnpm exec astro build --outDir dist-pdf", {
+	cwd: ROOT_DIR,
+	env: { ...process.env, PDF_BUILD: "true" },
+	stdio: "inherit",
+});
+
+const server = await serveDir(PDF_DIST_DIR);
 const { port } = server.address();
 
 const browser = await chromium.launch();
@@ -56,5 +69,6 @@ await page.pdf({
 
 await browser.close();
 server.close();
+await rm(PDF_DIST_DIR, { recursive: true, force: true });
 
-console.log("Generated dist/cv.pdf from the live page.");
+console.log("Generated dist/cv.pdf (with contact details) from a separate PDF-only build.");

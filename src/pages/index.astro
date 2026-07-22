@@ -8,7 +8,8 @@ import Experience from "@/components/sections/Experience.astro";
 import SystemStatus from "@/components/cv/SystemStatus.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
 import TestRunnerEasterEgg from "@/components/TestRunnerEasterEgg.astro";
-import LoadTestEasterEgg from "@/components/LoadTestEasterEgg.astro";
+// LoadTestEasterEgg temporarily disabled — component kept for later re-enabling.
+// import LoadTestEasterEgg from "@/components/LoadTestEasterEgg.astro";
 
 import { basics } from "@cv";
 const { name, label } = basics;
@@ -29,7 +30,7 @@ const { name, label } = basics;
 	<SystemStatus />
 	<KeyboardManager />
 	<TestRunnerEasterEgg />
-	<LoadTestEasterEgg />
+	{/* <LoadTestEasterEgg /> — temporarily disabled */}
 </Layout>
 
 <style>

@@ -10,7 +10,7 @@ const DATA_DIR = path.resolve(import.meta.dirname, "..", "src", "data");
 
 function runTests() {
 	try {
-		execSync("pnpm exec playwright test", {
+		execSync("pnpm exec playwright test --project=chromium", {
 			env: { ...process.env, BASE_URL: SITE_URL },
 			stdio: "inherit",
 		});

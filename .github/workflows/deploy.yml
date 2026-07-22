@@ -26,8 +26,16 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install --with-deps
       - run: pnpm run build
+      - name: Cross-browser regression check
+        run: |
+          pnpm run preview &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:4321 > /dev/null && break
+            sleep 1
+          done
+          pnpm exec playwright test
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist

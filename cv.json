@@ -35,7 +35,7 @@
       "endDate": null,
       "summary": "Designing and maintaining automated system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles.",
       "responsibilities": [
-        "Designed, developed, and maintained system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles. Identified, documented, and tracked defects using log-based root-cause analysis. Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues. Interviewed and evaluated candidates for open Test Automation Engineer positions. Played a key role in raising automated regression and E2E test suite success rates from under 65% to a consistent 95%+ across multiple major projects, while reducing the number of manually executed regression test cases by 30%."
+        "Designed, developed, and maintained system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles. Identified, documented, and tracked defects using log-based root-cause analysis. Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues. Interviewed and evaluated candidates for open Test Automation Engineer positions. Played a key role in raising automated regression system and E2E test suite success rates from under 65% to a consistent 95%+ across multiple major projects, while reducing the number of manually executed regression test cases by 30%."
       ],
       "achievements": [],
       "skills": ["Python", "Behave BDD", "Cucumber", "Gherkin", "Selenium", "Playwright", "Kibana", "OpenSearch", "Git", "GitLab CI/CD", "Jira", "Confluence", "Zephyr"]

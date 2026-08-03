@@ -53,7 +53,7 @@
         "Developed automated unit and integration tests for safety-critical software running on acute dialysis machines. This work closed a significant testing backlog in legacy code."
       ],
       "achievements": [],
-      "skills": ["C", "C++", "Git", "Embedded Systems", "Jenkins", "DOORS"]
+      "skills": ["C", "C++", "Git", "Embedded Systems", "DOORS"]
     },
     {
       "name": "MedRes Kft.",
@@ -170,8 +170,7 @@
     { "name": "GitLab CI/CD", "level": "", "keywords": ["Tools & Version Control"] },
     { "name": "DOORS", "level": "", "keywords": ["Tools & Version Control"] },
     { "name": "Kibana", "level": "", "keywords": ["Systems & Monitoring"] },
-    { "name": "OpenSearch", "level": "", "keywords": ["Systems & Monitoring"] },
-    { "name": "Lotus Notes", "level": "", "keywords": ["Systems & Monitoring"] }
+    { "name": "OpenSearch", "level": "", "keywords": ["Systems & Monitoring"] }
   ],
   "languages": [
     { "language": "English", "fluency": "Fluent" },

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && node scripts/generate-pdf.mjs",
+    "build": "astro check && astro build",
     "preview": "astro preview",
     "test:e2e": "playwright test",
     "quality-check": "node scripts/quality-check.mjs",

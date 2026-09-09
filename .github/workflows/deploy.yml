@@ -30,7 +30,7 @@ jobs:
         # The runner image ships a pre-baked Google Chrome, which brings this apt source
         # along even though Playwright's own browsers don't need it — it just makes
         # `apt-get update` flaky (intermittent Hash Sum mismatches from dl.google.com).
-        run: sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+        run: sudo rm -f /etc/apt/sources.list.d/google-chrome*
       - name: Install Playwright browsers
         run: |
           for i in 1 2; do

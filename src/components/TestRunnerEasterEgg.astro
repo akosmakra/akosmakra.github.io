@@ -89,13 +89,16 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		steps?: { name: string; status: string; conclusion: string | null }[];
 	}
 
-	const INFRA_FAILURE_STEP_PATTERN = /playwright install/i;
+	function isPlaywrightInstallStep(name: string): boolean {
+		const lower = name.toLowerCase();
+		return lower.includes("playwright") && lower.includes("install");
+	}
 
 	function isKnownInfraFailure(jobs: GhJob[]): boolean {
 		const failedJobs = jobs.filter((job) => job.conclusion && job.conclusion !== "success");
 		if (failedJobs.length === 0) return false;
 		return failedJobs.every((job) =>
-			(job.steps ?? []).some((step) => step.conclusion === "failure" && INFRA_FAILURE_STEP_PATTERN.test(step.name)),
+			(job.steps ?? []).some((step) => step.conclusion === "failure" && isPlaywrightInstallStep(step.name)),
 		);
 	}
 

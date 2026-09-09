@@ -26,12 +26,17 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Drop the unused Google Chrome apt source
+        # The runner image ships a pre-baked Google Chrome, which brings this apt source
+        # along even though Playwright's own browsers don't need it — it just makes
+        # `apt-get update` flaky (intermittent Hash Sum mismatches from dl.google.com).
+        run: sudo rm -f /etc/apt/sources.list.d/google-chrome.list
       - name: Install Playwright browsers
         run: |
           for i in 1 2; do
             echo "Installing Playwright browsers (attempt $i/2)…"
             pnpm exec playwright install --with-deps && exit 0
-            echo "Attempt $i failed — likely a flaky apt/Chrome mirror on the runner."
+            echo "Attempt $i failed — likely a flaky apt mirror on the runner."
             sleep 5
           done
           echo "Both attempts failed; giving up."

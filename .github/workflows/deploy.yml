@@ -26,7 +26,16 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps
+      - name: Install Playwright browsers
+        run: |
+          for i in 1 2; do
+            echo "Installing Playwright browsers (attempt $i/2)…"
+            pnpm exec playwright install --with-deps && exit 0
+            echo "Attempt $i failed — likely a flaky apt/Chrome mirror on the runner."
+            sleep 5
+          done
+          echo "Both attempts failed; giving up."
+          exit 1
       - run: pnpm run build
       - name: Cross-browser regression check
         run: |

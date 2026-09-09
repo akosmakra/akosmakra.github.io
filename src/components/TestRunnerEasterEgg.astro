@@ -86,6 +86,17 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		name: string;
 		status: string;
 		conclusion: string | null;
+		steps?: { name: string; status: string; conclusion: string | null }[];
+	}
+
+	const INFRA_FAILURE_STEP_PATTERN = /playwright install/i;
+
+	function isKnownInfraFailure(jobs: GhJob[]): boolean {
+		const failedJobs = jobs.filter((job) => job.conclusion && job.conclusion !== "success");
+		if (failedJobs.length === 0) return false;
+		return failedJobs.every((job) =>
+			(job.steps ?? []).some((step) => step.conclusion === "failure" && INFRA_FAILURE_STEP_PATTERN.test(step.name)),
+		);
 	}
 
 	type RowState = "pending" | "running" | "success" | "failed";
@@ -142,7 +153,7 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		closeButton?.addEventListener("click", close);
 	}
 
-	function renderResultSummary(lines: HTMLElement, overlay: HTMLElement, finalPassedCount: number, allDone: boolean, rateLimited: boolean) {
+	function renderResultSummary(lines: HTMLElement, overlay: HTMLElement, finalPassedCount: number, allDone: boolean, rateLimited: boolean, knownInfraFailure: boolean) {
 		const fullyPassed = allDone && finalPassedCount === SMOKE_TESTS.length;
 
 		const summary = makeLine(
@@ -158,10 +169,14 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		lines.appendChild(summary);
 
 		if (allDone && !fullyPassed) {
-			const contactLinkedin = overlay.dataset.contactLinkedin ?? "";
 			const contact = document.createElement("div");
 			contact.className = "mt-2 text-[13px] font-normal text-slate-400";
-			contact.innerHTML = `Oops, something broke — that's exactly why smoke tests exist. I've already been notified on multiple platforms, but if you want to make sure I see it, feel free to reach out on <a class="underline hover:text-slate-200" href="${contactLinkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`;
+			if (knownInfraFailure) {
+				contact.innerHTML = `Known issue, not a bug: GitHub's browser-install step hit a flaky package mirror before any test could even run. The site itself is fine — this usually clears up on its own, feel free to try again in a bit.`;
+			} else {
+				const contactLinkedin = overlay.dataset.contactLinkedin ?? "";
+				contact.innerHTML = `Oops, something broke — that's exactly why smoke tests exist. I've already been notified on multiple platforms, but if you want to make sure I see it, feel free to reach out on <a class="underline hover:text-slate-200" href="${contactLinkedin}" target="_blank" rel="noopener noreferrer">LinkedIn</a>.`;
+			}
 			lines.appendChild(contact);
 		}
 
@@ -356,6 +371,7 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		let allDone = false;
 		let rateLimited = false;
 		let finalPassedCount = 0;
+		let lastJobs: GhJob[] = [];
 
 		while (Date.now() < overallDeadline && !allDone) {
 			if (!isCurrent()) {
@@ -371,6 +387,7 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 				}
 				const data = await res.json();
 				const jobs: GhJob[] = data.jobs ?? [];
+				lastJobs = jobs;
 				let completedCount = 0;
 				let passedCount = 0;
 
@@ -410,7 +427,7 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 		} else {
 			renderReady();
 		}
-		renderResultSummary(lines, overlay, finalPassedCount, allDone, rateLimited);
+		renderResultSummary(lines, overlay, finalPassedCount, allDone, rateLimited, allDone && isKnownInfraFailure(lastJobs));
 	}
 
 	function runSimulatedFailure() {
@@ -443,7 +460,7 @@ const linkedinUrl = profiles.find((profile) => profile.network === "LinkedIn")?.
 
 		if (progress) progress.textContent = `${passedCount}/${SMOKE_TESTS.length} passed`;
 
-		renderResultSummary(lines, overlay, passedCount, true, false);
+		renderResultSummary(lines, overlay, passedCount, true, false, false);
 	}
 
 	window.addEventListener("run-tests-easter-egg", () => {

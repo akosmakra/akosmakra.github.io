@@ -163,6 +163,7 @@
     { "name": "Cucumber/Gherkin", "level": "", "keywords": ["Test Automation & QA"] },
     { "name": "Selenium", "level": "", "keywords": ["Test Automation & QA"] },
     { "name": "Playwright", "level": "", "keywords": ["Test Automation & QA"] },
+    { "name": "Postman", "level": "", "keywords": ["Test Automation & QA"] },
     { "name": "Jira", "level": "", "keywords": ["Test Automation & QA"] },
     { "name": "Confluence", "level": "", "keywords": ["Test Automation & QA"] },
     { "name": "Zephyr", "level": "", "keywords": ["Test Automation & QA"] },

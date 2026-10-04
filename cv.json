@@ -6,8 +6,8 @@
     "email": "akosmakra@gmail.com",
     "phone": "+36 20 556 5333",
     "url": "https://akosmakra.github.io",
-    "summary": "Test Automation Engineer with a PhD in Information Science, specializing in system and E2E test automation (Python, Behave BDD, Selenium, Playwright). Background in biomedical signal processing and ultrasound imaging research, with international research experience in Germany, Italy, and the Netherlands.",
-    "metaDescription": "Dr. Ákos Makra — Test Automation Engineer with a PhD in Information Science, specializing in Python, Behave BDD, Selenium and Playwright test automation.",
+    "summary": "Test automation engineer with about four years of testing experience and a PhD in Information Science. At Magyar Telekom I write and maintain automated system and E2E regression tests in Python, based on business requirements. Before that, I wrote unit and integration tests for dialysis machine software at B. Braun. My strengths are test design and making test suites reliable: I led the work that raised our regression pass rate from under 65% to over 95%.",
+    "metaDescription": "Dr. Ákos Makra — Test Automation Engineer with a PhD in Information Science. Python, Behave BDD, Playwright and Selenium regression automation at Magyar Telekom.",
     "theme": "default",
     "location": {
       "address": "",
@@ -33,27 +33,49 @@
       "url": "https://www.telekom.hu",
       "startDate": "2024-07-01",
       "endDate": null,
-      "summary": "Designing and maintaining automated system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles.",
+      "summary": "Writing and maintaining automated system and E2E regression tests in Python, based on business requirements.",
       "responsibilities": [
-        "Designed, developed, and maintained system and E2E tests, combining business requirements, acceptance criteria, and testing-pyramid principles. Identified, documented, and tracked defects using log-based root-cause analysis. Mentored QA teams transitioning from manual to automated testing, as well as junior and newly onboarded colleagues. Interviewed and evaluated candidates for open Test Automation Engineer positions. Played a key role in raising automated regression system and E2E test suite success rates from under 65% to a consistent 95%+ across multiple major projects, while reducing the number of manually executed regression test cases by 30%."
+        "Write and maintain automated system and E2E regression tests in Python (Behave, Playwright) from business requirements and acceptance criteria, following testing-pyramid principles.",
+        "Led regular team sessions over 9+ months to fix unstable regression tests. Pass rates went from under 65% to over 95% on two projects. Together with automating 30% of the manual regression test cases, this cut full regression on the largest project from 6 testers over 3–4 days to 3 testers in one day.",
+        "Refactor page objects, step definitions and helper code daily. Removed years of unused code from several repositories and added reusable functions to our shared Python API test library (Pydantic, OpenAPI).",
+        "Set up scheduled GitLab CI/CD pipelines; investigate failed runs using logs in Kibana and OpenSearch.",
+        "Escalated repeated test environment failures at 100 parallel threads, with evidence, until they were fixed. Regression could then run on 100 threads instead of 50.",
+        "Mentor manual testers in automation and log-based debugging. Interviewed multiple candidates for test automation roles."
       ],
       "achievements": [],
-      "skills": ["Python", "Behave BDD", "Cucumber", "Gherkin", "Selenium", "Playwright", "Kibana", "OpenSearch", "Git", "GitLab CI/CD", "Jira", "Confluence", "Zephyr"]
+      "skills": [
+        "Python",
+        "Behave BDD",
+        "Cucumber",
+        "Gherkin",
+        "Selenium",
+        "Playwright",
+        "Pydantic",
+        "OpenAPI",
+        "Kibana",
+        "OpenSearch",
+        "Git",
+        "GitLab CI/CD",
+        "Jira",
+        "Confluence",
+        "Zephyr"
+      ]
     },
     {
-      "name": "Effective Group Talent Solutions Kft. — B. Braun project",
+      "name": "B. Braun (via Effective Group Talent Solutions Kft.)",
       "position": "Software Tester",
       "location": "",
       "location_type": "",
       "url": "",
       "startDate": "2021-11-01",
       "endDate": "2023-06-01",
-      "summary": "Developed automated integration and unit tests for acute dialysis machines.",
+      "summary": "Wrote automated unit and integration tests for safety-critical software on acute dialysis machines.",
       "responsibilities": [
-        "Developed automated unit and integration tests for safety-critical software running on acute dialysis machines. This work closed a significant testing backlog in legacy code."
+        "Wrote automated unit and integration tests in C and C++ (CppUTest) for safety-critical software on acute dialysis machines.",
+        "When the code or existing tests were unclear, checked the requirements in IBM DOORS and reported cases where the code did not match them."
       ],
       "achievements": [],
-      "skills": ["C", "C++", "Git", "Embedded Systems", "DOORS"]
+      "skills": ["C", "C++", "CppUTest", "Git", "Embedded Systems", "IBM DOORS"]
     },
     {
       "name": "MedRes Kft.",
@@ -63,57 +85,12 @@
       "url": "",
       "startDate": "2019-05-01",
       "endDate": "2019-09-01",
-      "summary": "Performed ultrasound simulations, device development and testing.",
+      "summary": "Ran GPU-based ultrasound simulations in k-Wave (MATLAB) and helped with medical device development and testing.",
       "responsibilities": [
-        "Performed ultrasound simulations, device development and testing."
+        "Ran GPU-based ultrasound simulations in k-Wave (MATLAB) and helped with medical device development and testing."
       ],
       "achievements": [],
       "skills": ["MATLAB", "k-Wave"]
-    },
-    {
-      "name": "Fraunhofer IBMT",
-      "position": "ERASMUS Research Intern",
-      "location": "Sankt Ingbert, Germany",
-      "location_type": "On site",
-      "url": "https://www.ibmt.fraunhofer.de",
-      "startDate": "2016-06-01",
-      "endDate": "2016-07-31",
-      "summary": "Examined biological tissues using scanning acoustic microscopy.",
-      "responsibilities": [
-        "Examined biological tissues using scanning acoustic microscopy."
-      ],
-      "achievements": [],
-      "skills": ["MATLAB", "LabVIEW"]
-    },
-    {
-      "name": "University of Florence (MSDLAB)",
-      "position": "ERASMUS Research Intern",
-      "location": "Florence, Italy",
-      "location_type": "On site",
-      "url": "https://www.unifi.it",
-      "startDate": "2015-06-01",
-      "endDate": "2015-07-31",
-      "summary": "Developed real-time imaging and feature extraction for an ultrasound device.",
-      "responsibilities": [
-        "Developed real-time imaging and feature extraction for an ultrasound device."
-      ],
-      "achievements": [],
-      "skills": ["C++", "MATLAB"]
-    },
-    {
-      "name": "Philips",
-      "position": "ERASMUS Research Intern",
-      "location": "Eindhoven, Netherlands",
-      "location_type": "On site",
-      "url": "https://www.philips.com",
-      "startDate": "2014-06-01",
-      "endDate": "2014-08-31",
-      "summary": "Performed surgical biomedical signal analysis and processing.",
-      "responsibilities": [
-        "Performed surgical biomedical signal analysis and processing."
-      ],
-      "achievements": [],
-      "skills": ["MATLAB"]
     }
   ],
   "volunteer": [],
@@ -154,24 +131,29 @@
   "certificates": [],
   "publications": [],
   "skills": [
-    { "name": "Python", "level": "", "keywords": ["Programming & Scripting"] },
-    { "name": "C", "level": "", "keywords": ["Programming & Scripting"] },
-    { "name": "MATLAB", "level": "", "keywords": ["Programming & Scripting"] },
-    { "name": "C++", "level": "", "keywords": ["Programming & Scripting"] },
-    { "name": "SQL", "level": "", "keywords": ["Programming & Scripting"] },
-    { "name": "Behave BDD", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Cucumber/Gherkin", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Selenium", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Playwright", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Postman", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Jira", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Confluence", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Zephyr", "level": "", "keywords": ["Test Automation & QA"] },
-    { "name": "Git", "level": "", "keywords": ["Tools & Version Control"] },
-    { "name": "GitLab CI/CD", "level": "", "keywords": ["Tools & Version Control"] },
-    { "name": "DOORS", "level": "", "keywords": ["Tools & Version Control"] },
-    { "name": "Kibana", "level": "", "keywords": ["Systems & Monitoring"] },
-    { "name": "OpenSearch", "level": "", "keywords": ["Systems & Monitoring"] }
+    { "name": "Behave (BDD)", "level": "", "keywords": ["Test Automation"] },
+    { "name": "Cucumber/Gherkin", "level": "", "keywords": ["Test Automation"] },
+    { "name": "Playwright", "level": "", "keywords": ["Test Automation"] },
+    { "name": "Selenium", "level": "", "keywords": ["Test Automation"] },
+    { "name": "CppUTest", "level": "", "keywords": ["Test Automation"] },
+    { "name": "System, E2E, regression, unit and integration testing", "level": "", "keywords": ["Test Automation"] },
+    { "name": "Python (Ruff)", "level": "", "keywords": ["Programming"] },
+    { "name": "C", "level": "", "keywords": ["Programming"] },
+    { "name": "C++", "level": "", "keywords": ["Programming"] },
+    { "name": "SQL", "level": "", "keywords": ["Programming"] },
+    { "name": "MATLAB", "level": "", "keywords": ["Programming"] },
+    { "name": "REST API testing in Python", "level": "", "keywords": ["API & CI/CD"] },
+    { "name": "Postman", "level": "", "keywords": ["API & CI/CD"] },
+    { "name": "Git", "level": "", "keywords": ["API & CI/CD"] },
+    { "name": "GitLab CI/CD", "level": "", "keywords": ["API & CI/CD"] },
+    { "name": "Claude", "level": "", "keywords": ["AI Tools"] },
+    { "name": "Claude Code", "level": "", "keywords": ["AI Tools"] },
+    { "name": "Kibana", "level": "", "keywords": ["Monitoring & Tools"] },
+    { "name": "OpenSearch", "level": "", "keywords": ["Monitoring & Tools"] },
+    { "name": "Jira", "level": "", "keywords": ["Monitoring & Tools"] },
+    { "name": "Zephyr", "level": "", "keywords": ["Monitoring & Tools"] },
+    { "name": "Confluence", "level": "", "keywords": ["Monitoring & Tools"] },
+    { "name": "IBM DOORS", "level": "", "keywords": ["Monitoring & Tools"] }
   ],
   "languages": [
     { "language": "English", "fluency": "Fluent" },
@@ -181,7 +163,7 @@
   "interests": [],
   "references": [],
   "achievements": [
-    "First Hungarian to thru-hike the 4,273 km long Pacific Crest Trail southbound (130 days, 2023) and the 800 km long Pyrenean Haute Route (40 days, 2021)"
+    "First Hungarian to thru-hike the 4,273 km Pacific Crest Trail southbound (130 days, 2023) and the 800 km Pyrenean Haute Route (40 days, 2021)"
   ],
   "awards": [
     { "title": "New National Excellence Scholarship", "date": "2018, 2019", "awarder": "", "summary": "" },
@@ -190,5 +172,25 @@
     { "title": "Central Fund Scholarship", "date": "2015", "awarder": "", "summary": "" },
     { "title": "1st Place — Student Scientific Conference", "date": "2014, 2015", "awarder": "", "summary": "" }
   ],
-  "projects": []
+  "projects": [],
+  "internships": [
+    {
+      "organization": "Fraunhofer IBMT",
+      "location": "Germany",
+      "year": "2016",
+      "summary": "Studied biological tissue with scanning acoustic microscopy."
+    },
+    {
+      "organization": "University of Florence, MSDLAB",
+      "location": "Italy",
+      "year": "2015",
+      "summary": "Worked on real-time imaging and feature extraction for an ultrasound device."
+    },
+    {
+      "organization": "Philips",
+      "location": "Eindhoven, Netherlands",
+      "year": "2014",
+      "summary": "Analysed surgical biomedical signals."
+    }
+  ]
 }

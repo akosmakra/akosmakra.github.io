@@ -1,0 +1,22 @@
+---
+import Section from "../Section.astro";
+import { internships } from "@cv";
+---
+
+{
+	internships.length > 0 && (
+		<Section className={Astro.props.className} title="Research Internships (ERASMUS)">
+			<ul class="flex flex-col gap-3 py-3 print:gap-1 print:py-0">
+				{internships.map(({ organization, location, year, summary }) => (
+					<li class="flex items-baseline justify-between gap-4 print:break-inside-avoid">
+						<div class="text-lg print:text-xs">
+							<span class="font-medium text-skin-base">{organization}</span>
+							<span class="text-skin-muted">, {location} — {summary}</span>
+						</div>
+						<time class="shrink-0 text-base text-skin-muted">{year}</time>
+					</li>
+				))}
+			</ul>
+		</Section>
+	)
+}

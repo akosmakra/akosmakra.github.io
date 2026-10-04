@@ -5,7 +5,7 @@ import LinkedIn from "@/icons/LinkedIn.astro";
 const { image, name, profiles } = basics;
 const linkedIn = profiles.find(({ network }) => network === "LinkedIn");
 
-const SKILL_CATEGORY_ORDER = ["Test Automation & QA", "Programming & Scripting", "Tools & Version Control", "Systems & Monitoring"];
+const SKILL_CATEGORY_ORDER = ["Test Automation", "Programming", "API & CI/CD", "AI Tools", "Monitoring & Tools"];
 
 const skillsByCategory = SKILL_CATEGORY_ORDER.map((category) => ({
 	category,

@@ -1,13 +1,13 @@
 {
   "basics": {
-    "name": "Dr. Ákos Makra",
-    "label": "Test Automation Engineer · PhD in Information Science",
+    "name": "Ákos Makra, PhD",
+    "label": "Test Automation Engineer",
     "image": "/me_avatar.jpg",
     "email": "akosmakra@gmail.com",
     "phone": "+36 20 556 5333",
     "url": "https://akosmakra.github.io",
-    "summary": "Test automation engineer with about four years of testing experience and a PhD in Information Science. At Magyar Telekom I write and maintain automated system and E2E regression tests in Python, based on business requirements. Before that, I wrote unit and integration tests for dialysis machine software at B. Braun. My strengths are test design and making test suites reliable: I led the work that raised our regression pass rate from under 65% to over 95%.",
-    "metaDescription": "Dr. Ákos Makra — Test Automation Engineer with a PhD in Information Science. Python, Behave BDD, Playwright and Selenium regression automation at Magyar Telekom.",
+    "summary": "Test automation engineer with 4 years of testing experience and a PhD in Information Science. At Magyar Telekom, writes and maintains automated UI, E2E and system regression tests in Python, based on business requirements. Led the effort to fix unstable regression tests on two projects, raising their pass rate from under 65% to over 95%. Previously wrote unit and integration tests for safety-critical dialysis machine software at B. Braun.",
+    "metaDescription": "Ákos Makra, PhD: Test Automation Engineer. Python, Behave BDD, Playwright and Selenium regression automation at Magyar Telekom.",
     "theme": "default",
     "location": {
       "address": "",
@@ -33,37 +33,37 @@
       "url": "https://www.telekom.hu",
       "startDate": "2024-07-01",
       "endDate": null,
-      "summary": "Writing and maintaining automated system and E2E regression tests in Python, based on business requirements.",
+      "summary": "Writes and maintains automated UI, E2E and system regression tests in Python, based on business requirements.",
       "responsibilities": [
-        "Write and maintain automated system and E2E regression tests in Python (Behave, Playwright) from business requirements and acceptance criteria, following testing-pyramid principles.",
-        "Led regular team sessions over 9+ months to fix unstable regression tests. Pass rates went from under 65% to over 95% on two projects. Together with automating 30% of the manual regression test cases, this cut full regression on the largest project from 6 testers over 3–4 days to 3 testers in one day.",
-        "Refactor page objects, step definitions and helper code daily. Removed years of unused code from several repositories and added reusable functions to our shared Python API test library (Pydantic, OpenAPI).",
-        "Set up scheduled GitLab CI/CD pipelines; investigate failed runs using logs in Kibana and OpenSearch.",
-        "Escalated repeated test environment failures at 100 parallel threads, with evidence, until they were fixed. Regression could then run on 100 threads instead of 50.",
-        "Mentor manual testers in automation and log-based debugging. Interviewed multiple candidates for test automation roles."
+        "Maintain and extend the team’s 450+ test regression suite (Python, Behave, Selenium/Playwright) for the customer service agents’ application and its order flows.",
+        "Led regular team sessions for 9 months to fix unstable regression tests on two projects. Main causes: faulty test logic (wrong assertions, inconsistent waits, hard-coded data) and test data that was shared or poorly defined for the given process. Fixed the logic and refined the test data. Pass rate went from under 65% to over 95%.",
+        "Together with automating 30% of the manual cases, this cut regression on the largest project from 6 testers over 3–4 days to 3 testers in one day.",
+        "Refactor test code into clear layers (page objects, step definitions, waits and assertions). Removed several thousand lines of unused code, including dependencies in other repositories.",
+        "Set up scheduled GitLab CI/CD pipelines. Investigate failed runs in Kibana/OpenSearch and report results in Zephyr.",
+        "Proved with logs that the test environment failed under parallel load and followed up until it was fixed, nearly halving automated test runtime.",
+        "Use Claude Code for refactoring and new test cases, with review agents and hooks for code checks.",
+        "Mentor manual testers and new colleagues in automation and log-based debugging. Interview test automation candidates."
       ],
       "achievements": [],
       "skills": [
         "Python",
         "Behave BDD",
-        "Cucumber",
         "Gherkin",
         "Selenium",
         "Playwright",
-        "Pydantic",
-        "OpenAPI",
         "Kibana",
         "OpenSearch",
         "Git",
         "GitLab CI/CD",
         "Jira",
         "Confluence",
-        "Zephyr"
+        "Zephyr",
+        "Claude Code"
       ]
     },
     {
       "name": "B. Braun (via Effective Group Talent Solutions Kft.)",
-      "position": "Software Tester",
+      "position": "Software Tester (embedded C/C++)",
       "location": "",
       "location_type": "",
       "url": "",
@@ -72,10 +72,18 @@
       "summary": "Wrote automated unit and integration tests for safety-critical software on acute dialysis machines.",
       "responsibilities": [
         "Wrote automated unit and integration tests in C and C++ (CppUTest) for safety-critical software on acute dialysis machines.",
-        "When the code or existing tests were unclear, checked the requirements in IBM DOORS and reported cases where the code did not match them."
+        "Worked through a years-old backlog of integration and unit tests, raising code coverage.",
+        "Checked code against requirements in IBM DOORS and reported mismatches."
       ],
       "achievements": [],
-      "skills": ["C", "C++", "CppUTest", "Git", "Embedded Systems", "IBM DOORS"]
+      "skills": [
+        "C",
+        "C++",
+        "CppUTest",
+        "Git",
+        "Embedded Systems",
+        "IBM DOORS"
+      ]
     },
     {
       "name": "MedRes Kft.",
@@ -90,7 +98,10 @@
         "Ran GPU-based ultrasound simulations in k-Wave (MATLAB) and helped with medical device development and testing."
       ],
       "achievements": [],
-      "skills": ["MATLAB", "k-Wave"]
+      "skills": [
+        "MATLAB",
+        "k-Wave"
+      ]
     }
   ],
   "volunteer": [],
@@ -131,34 +142,174 @@
   "certificates": [],
   "publications": [],
   "skills": [
-    { "name": "Behave (BDD)", "level": "", "keywords": ["Test Automation"] },
-    { "name": "Cucumber/Gherkin", "level": "", "keywords": ["Test Automation"] },
-    { "name": "Playwright", "level": "", "keywords": ["Test Automation"] },
-    { "name": "Selenium", "level": "", "keywords": ["Test Automation"] },
-    { "name": "CppUTest", "level": "", "keywords": ["Test Automation"] },
-    { "name": "System, E2E, regression, unit and integration testing", "level": "", "keywords": ["Test Automation"] },
-    { "name": "Python (Ruff)", "level": "", "keywords": ["Programming"] },
-    { "name": "C", "level": "", "keywords": ["Programming"] },
-    { "name": "C++", "level": "", "keywords": ["Programming"] },
-    { "name": "SQL", "level": "", "keywords": ["Programming"] },
-    { "name": "MATLAB", "level": "", "keywords": ["Programming"] },
-    { "name": "REST API testing in Python", "level": "", "keywords": ["API & CI/CD"] },
-    { "name": "Postman", "level": "", "keywords": ["API & CI/CD"] },
-    { "name": "Git", "level": "", "keywords": ["API & CI/CD"] },
-    { "name": "GitLab CI/CD", "level": "", "keywords": ["API & CI/CD"] },
-    { "name": "Claude", "level": "", "keywords": ["AI Tools"] },
-    { "name": "Claude Code", "level": "", "keywords": ["AI Tools"] },
-    { "name": "Kibana", "level": "", "keywords": ["Monitoring & Tools"] },
-    { "name": "OpenSearch", "level": "", "keywords": ["Monitoring & Tools"] },
-    { "name": "Jira", "level": "", "keywords": ["Monitoring & Tools"] },
-    { "name": "Zephyr", "level": "", "keywords": ["Monitoring & Tools"] },
-    { "name": "Confluence", "level": "", "keywords": ["Monitoring & Tools"] },
-    { "name": "IBM DOORS", "level": "", "keywords": ["Monitoring & Tools"] }
+    {
+      "name": "Playwright",
+      "level": "",
+      "keywords": [
+        "Test Automation"
+      ]
+    },
+    {
+      "name": "Selenium",
+      "level": "",
+      "keywords": [
+        "Test Automation"
+      ]
+    },
+    {
+      "name": "Behave/Gherkin (BDD)",
+      "level": "",
+      "keywords": [
+        "Test Automation"
+      ]
+    },
+    {
+      "name": "CppUTest",
+      "level": "",
+      "keywords": [
+        "Test Automation"
+      ]
+    },
+    {
+      "name": "UI, E2E, system, regression, unit and integration testing",
+      "level": "",
+      "keywords": [
+        "Test Automation"
+      ]
+    },
+    {
+      "name": "Python",
+      "level": "",
+      "keywords": [
+        "Programming"
+      ]
+    },
+    {
+      "name": "C",
+      "level": "",
+      "keywords": [
+        "Programming"
+      ]
+    },
+    {
+      "name": "C++",
+      "level": "",
+      "keywords": [
+        "Programming"
+      ]
+    },
+    {
+      "name": "SQL",
+      "level": "",
+      "keywords": [
+        "Programming"
+      ]
+    },
+    {
+      "name": "MATLAB",
+      "level": "",
+      "keywords": [
+        "Programming"
+      ]
+    },
+    {
+      "name": "GitLab CI/CD",
+      "level": "",
+      "keywords": [
+        "CI/CD & Version Control"
+      ]
+    },
+    {
+      "name": "Git",
+      "level": "",
+      "keywords": [
+        "CI/CD & Version Control"
+      ]
+    },
+    {
+      "name": "REST API tests in Python",
+      "level": "",
+      "keywords": [
+        "API Testing"
+      ]
+    },
+    {
+      "name": "Postman",
+      "level": "",
+      "keywords": [
+        "API Testing"
+      ]
+    },
+    {
+      "name": "Claude Code",
+      "level": "",
+      "keywords": [
+        "AI-Assisted Development"
+      ]
+    },
+    {
+      "name": "Jira",
+      "level": "",
+      "keywords": [
+        "Tools"
+      ]
+    },
+    {
+      "name": "Zephyr",
+      "level": "",
+      "keywords": [
+        "Tools"
+      ]
+    },
+    {
+      "name": "Confluence",
+      "level": "",
+      "keywords": [
+        "Tools"
+      ]
+    },
+    {
+      "name": "Kibana",
+      "level": "",
+      "keywords": [
+        "Tools"
+      ]
+    },
+    {
+      "name": "OpenSearch",
+      "level": "",
+      "keywords": [
+        "Tools"
+      ]
+    },
+    {
+      "name": "IBM DOORS",
+      "level": "",
+      "keywords": [
+        "Tools"
+      ]
+    },
+    {
+      "name": "Ruff",
+      "level": "",
+      "keywords": [
+        "Tools"
+      ]
+    }
   ],
   "languages": [
-    { "language": "English", "fluency": "Fluent" },
-    { "language": "German", "fluency": "Intermediate" },
-    { "language": "Hungarian", "fluency": "Native speaker" }
+    {
+      "language": "English",
+      "fluency": "Fluent"
+    },
+    {
+      "language": "German",
+      "fluency": "Intermediate"
+    },
+    {
+      "language": "Hungarian",
+      "fluency": "Native speaker"
+    }
   ],
   "interests": [],
   "references": [],
@@ -166,11 +317,36 @@
     "First Hungarian to thru-hike the 4,273 km Pacific Crest Trail southbound (130 days, 2023) and the 800 km Pyrenean Haute Route (40 days, 2021)"
   ],
   "awards": [
-    { "title": "New National Excellence Scholarship", "date": "2018, 2019", "awarder": "", "summary": "" },
-    { "title": "Young Talent Scholarship", "date": "2017", "awarder": "", "summary": "" },
-    { "title": "PhD Excellence Scholarship", "date": "2016", "awarder": "", "summary": "" },
-    { "title": "Central Fund Scholarship", "date": "2015", "awarder": "", "summary": "" },
-    { "title": "1st Place — Student Scientific Conference", "date": "2014, 2015", "awarder": "", "summary": "" }
+    {
+      "title": "New National Excellence Scholarship",
+      "date": "2018, 2019",
+      "awarder": "",
+      "summary": ""
+    },
+    {
+      "title": "Young Talent Scholarship",
+      "date": "2017",
+      "awarder": "",
+      "summary": ""
+    },
+    {
+      "title": "PhD Excellence Scholarship",
+      "date": "2016",
+      "awarder": "",
+      "summary": ""
+    },
+    {
+      "title": "Central Fund Scholarship",
+      "date": "2015",
+      "awarder": "",
+      "summary": ""
+    },
+    {
+      "title": "1st Place — Student Scientific Conference",
+      "date": "2014, 2015",
+      "awarder": "",
+      "summary": ""
+    }
   ],
   "projects": [],
   "internships": [

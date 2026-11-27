@@ -1,10 +1,10 @@
 {
-  "builtAt": "2026-11-26T12:08:41.652Z",
-  "commit": "013d5d3",
+  "builtAt": "2026-11-27T11:57:46.208Z",
+  "commit": "45cfd05",
   "testsPassed": true,
   "testCount": 8,
   "lighthouse": {
-    "performance": 100,
+    "performance": 99,
     "accessibility": 95,
     "bestPractices": 100,
     "seo": 100
